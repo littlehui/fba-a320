@@ -43,6 +43,7 @@
 
 /* SDL declarations */
 extern SDL_Surface *screen;
+extern SDL_Surface *RS97screen;
 SDL_Surface *menuSurface = NULL; // menu rendering
 
 /* type definitions */
@@ -113,7 +114,10 @@ void gui_Flip()
 	dstrect.y = (screen->h - 240) / 2;
 
 	SDL_BlitSurface(menuSurface, 0, screen, &dstrect);
-	SDL_Flip(screen);
+	uint32_t *s = (uint32_t*)screen->pixels;
+	uint32_t *d = (uint32_t*)RS97screen->pixels;
+	for(uint8_t y = 0; y < 239; y++, s += 160, d += 320) memmove(d, s, 1280); // double-line fix by pingflood, 2018
+	// SDL_Flip(screen);
 }
 
 /*
