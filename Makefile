@@ -15,7 +15,7 @@ NAME = fbasdl
 DEPEND = 1
 
 # Include features for debugging drivers
-#DEBUG = 1
+DEBUG = 1
 
 # Perl is available
 PERL = 1
@@ -258,9 +258,9 @@ AS	= nasm
 
 HOSTCFLAGS = $(incdir)
 CFLAGS   = -O2 -fomit-frame-pointer -Wno-write-strings \
-		-DLSB_FIRST
+		-DLSB_FIRST -fpermissive
 CXXFLAGS = -O2 -fomit-frame-pointer -Wno-write-strings \
-		-DLSB_FIRST
+		-DLSB_FIRST -fpermissive
 
 ifneq ($(OS),Windows_NT)
 CFLAGS += -D__cdecl="" -D__fastcall=""
@@ -310,9 +310,9 @@ else
 	LDFLAGS		+= -s
 endif
 
-CFLAGS += $(DEF) $(incdir)
-CXXFLAGS += $(DEF) $(incdir)
-LDFLAGS += 
+CFLAGS += $(DEF) $(incdir) -m32
+CXXFLAGS += $(DEF) $(incdir) -m32
+LDFLAGS += -m32
 ASFLAGS = -O1
 
 ifeq ($(OS),Windows_NT)

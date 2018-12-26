@@ -1,3 +1,20 @@
+# CHAINPREFIX := /opt/rs97-toolchain-musl
+CHAINPREFIX := /opt/mipsel-linux-uclibc
+CROSS_COMPILE := $(CHAINPREFIX)/usr/bin/mipsel-linux-
+
+HOSTCC = gcc
+HOSTCXX = g++
+
+CC = $(CROSS_COMPILE)gcc
+CXX = $(CROSS_COMPILE)g++
+AS = $(CROSS_COMPILE)as
+LD	= $(CXX)
+
+SYSROOT     := $(shell $(CC) --print-sysroot)
+SDL_CFLAGS  := $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
+SDL_LIBS    := $(shell $(SYSROOT)/usr/bin/sdl-config --libs)
+
+
 # Makefile for FBA, for use with GNU make
 #
 # The first pass makes sure all intermediary targets are present. The second pass updates
@@ -15,7 +32,7 @@ NAME = fbasdl.dge
 DEPEND = 1
 
 # Include features for debugging drivers
-#DEBUG = 1
+DEBUG = 1
 
 # Perl is available
 PERL = 1
@@ -244,12 +261,12 @@ alldep	= $(foreach file,$(autobj:.o=.c), \
 #
 #
 
-HOSTCC = gcc
-HOSTCXX = g++
-CC	= mipsel-linux-gcc
-CXX	= mipsel-linux-g++
-LD	= $(CXX)
-AS	= mipsel-linux-as
+# HOSTCC = gcc
+# HOSTCXX = g++
+# CC	= mipsel-linux-gcc
+# CXX	= mipsel-linux-g++
+# LD	= $(CXX)
+# AS	= mipsel-linux-as
 
 HOSTCFLAGS = $(incdir)
 CFLAGS   = -O2 -G0 -march=mips32 -pipe -fno-builtin -fno-common -mno-shared -ffast-math \
