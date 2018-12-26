@@ -34,6 +34,7 @@ int PhysicalBufferWidth = 0;
 unsigned short *BurnVideoBuffer = NULL; // source FBA video buffer
 unsigned short *VideoBuffer = NULL; // screen buffer
 
+SDL_Surface *RS97screen;
 SDL_Surface *screen;
 
 // --------------------------------
@@ -594,8 +595,10 @@ int VideoInit()
 		SDL_InitSubSystem(SDL_INIT_VIDEO);
 	}
 
+	RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_HWSURFACE);
+	screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 	//screen = SDL_SetVideoMode(320, 240, 16, flags);
-	{
+	if (0) {
 		int i = 0; // 0 - 320x240, 1 - 400x240, 2 - 480x272
 		int surfacewidth, surfaceheight;
 		#define NUMOFVIDEOMODES 3
@@ -679,11 +682,15 @@ void VideoExit()
 void VideoClear()
 {
 	SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255));
-	SDL_Flip(screen);
-	SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255));
+	VideoFlip();
+	// SDL_Flip(screen);
+	// SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255));
 }
 
 void VideoFlip()
 {
-	SDL_Flip(screen);
+	uint32_t *s = (uint32_t*)screen->pixels;
+	uint32_t *d = (uint32_t*)RS97screen->pixels;
+	for(uint8_t y = 0; y < 239; y++, s += 160, d += 320) memmove(d, s, 1280); // double-line fix by pingflood, 2018
+	// SDL_Flip(screen);
 }
