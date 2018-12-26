@@ -34,11 +34,17 @@ int fwidth = 320, fheight = 240; // text surface
 void blit_loading_screen()
 {
 	extern SDL_Surface *screen;
-	SDL_Rect dst;
+	// extern SDL_Surface *RS97screen;
+	// SDL_Rect dst;
 
-	dst.x = (screen->w - 320) / 2;
-	dst.y = (screen->h - 240) / 2;
-	SDL_BlitSurface(load_screen, NULL, screen, &dst);
+	// dst.x = (screen->w - 320) / 2;
+	// dst.y = (screen->h - 240) / 2;
+	// SDL_BlitSurface(load_screen, NULL, screen, &dst);
+	// SDL_Flip(screen);
+	// SDL_SoftStretch(load_screen, NULL, RS97screen, 0);
+	// SDL_Flip(RS97screen);
+
+	SDL_SoftStretch(load_screen, NULL, screen, 0);
 	SDL_Flip(screen);
 }
 
