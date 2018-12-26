@@ -6,13 +6,13 @@
 #include <errno.h>
 #include "burner.h"
 
-char szAppHomePath[MAX_PATH] = "./.fba";			// ~/.fba
-char szAppSavePath[MAX_PATH] = "./.fba/saves";		// ~/.fba/saves
-char szAppConfigPath[MAX_PATH] = "./.fba/configs";	// ~/.fba/configs
-char szAppHiscorePath[MAX_PATH] = "./.fba/hiscore";	// ~/.fba/highscore // for burn/hiscore.cpp
-char szAppSamplesPath[MAX_PATH] = "./.fba/samples";	// ~/.fba/samples // for burn/snd/samples.cpp
-char szAppPreviewPath[MAX_PATH] = "./.fba/previews";	// ~/.fba/previews
-char szAppRomPaths[DIRS_MAX][MAX_PATH] = {{"./"}, {"/usr/local/share/roms/"}, {"roms/"}, };
+char szAppHomePath[MAX_PATH] = "/.fba";			// ~/.fba
+char szAppSavePath[MAX_PATH] = "/.fba/saves";		// ~/.fba/saves
+char szAppConfigPath[MAX_PATH] = "/.fba/configs";	// ~/.fba/configs
+char szAppHiscorePath[MAX_PATH] = "/.fba/hiscore";	// ~/.fba/highscore // for burn/hiscore.cpp
+char szAppSamplesPath[MAX_PATH] = "/.fba/samples";	// ~/.fba/samples // for burn/snd/samples.cpp
+char szAppPreviewPath[MAX_PATH] = "/.fba/previews";	// ~/.fba/previews
+char szAppRomPaths[DIRS_MAX][MAX_PATH] = {{"~/"}, {"/usr/local/share/roms/"}, {"roms/"}, {"/mnt/int_sd/roms/fba/"}, };
 
 void BurnPathsInit()
 {
@@ -22,7 +22,7 @@ void BurnPathsInit()
 	mkdir(szAppHomePath, 0777);
 	if(!errno) {
 		getcwd(szAppHomePath, MAX_PATH);
-		strcat(szAppHomePath, "./.fba");
+		strcat(szAppHomePath, "/.fba");
 		mkdir(szAppHomePath, 0777);
 	}
 
@@ -39,7 +39,7 @@ void BurnPathsInit()
 	mkdir(szAppSamplesPath, 0777);
 #else
 	getcwd(szAppHomePath, MAX_PATH);
-	strcat(szAppHomePath, "./.fba");
+	strcat(szAppHomePath, "/.fba");
 	mkdir(szAppHomePath);
 
 	sprintf(szAppSavePath, "%s/saves", szAppHomePath);
