@@ -108,15 +108,21 @@ extern unsigned char gui_font[2048];
 
 void gui_Flip()
 {
-	SDL_Rect dstrect;
+	// SDL_Rect dstrect;
 
-	dstrect.x = (screen->w - 320) / 2;
-	dstrect.y = (screen->h - 240) / 2;
+	// dstrect.x = (screen->w - 320) / 2;
+	// dstrect.y = (screen->h - 240) / 2;
 
-	SDL_BlitSurface(menuSurface, 0, screen, &dstrect);
-	uint32_t *s = (uint32_t*)screen->pixels;
-	uint32_t *d = (uint32_t*)RS97screen->pixels;
-	for(uint8_t y = 0; y < 239; y++, s += 160, d += 320) memmove(d, s, 1280); // double-line fix by pingflood, 2018
+	// SDL_BlitSurface(menuSurface, 0, screen, &dstrect);
+	// uint32_t *s = (uint32_t*)screen->pixels;
+	// uint32_t *d = (uint32_t*)RS97screen->pixels;
+	// for(uint8_t y = 0; y < 239; y++, s += 160, d += 320) memmove(d, s, 1280); // double-line fix by pingflood, 2018
+	// SDL_SoftStretch(menuSurface, NULL, screen, 0);
+	// SDL_Flip(screen);
+	SDL_SoftStretch(menuSurface, NULL, RS97screen, 0);
+	SDL_Flip(RS97screen);
+
+	// SDL_SoftStretch(menuSurface, NULL, screen, 0);
 	// SDL_Flip(screen);
 }
 

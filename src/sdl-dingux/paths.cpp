@@ -18,9 +18,7 @@ void BurnPathsInit()
 {
 #ifndef WIN32
 	char *home = getenv("HOME");
-
-		printf("HOME: '%s' \n", home);
-
+	printf("HOME: '%s' \n", home);
 	if (home) sprintf(szAppHomePath, "%s/.fba", home);
 	mkdir(szAppHomePath, 0777);
 	if (!errno) {
