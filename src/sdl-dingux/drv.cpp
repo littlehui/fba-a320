@@ -16,6 +16,7 @@ static int DoLibInit()					// Do Init of Burn library driver
 	ProgressCreate();
 
 	nRet = BurnDrvInit();
+	if (BzipStatus()) return 1;
 
 	BzipClose();
 
