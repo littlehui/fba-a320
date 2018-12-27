@@ -906,7 +906,7 @@ void ss_prog_run(void)
 						SDL_InitSubSystem(SDL_INIT_VIDEO);
 					}
 
-					// RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
+					RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
 					gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 					SDL_ShowCursor(0);
 
@@ -1156,7 +1156,7 @@ void GuiRun()
 	// fill data with data
 	gui_sort_romlist();
 
-	// RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
+	RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
 	gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 
 	SDL_ShowCursor(0);
