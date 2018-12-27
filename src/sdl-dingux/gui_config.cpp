@@ -79,24 +79,21 @@ void gui_write_cfg()
 {
 	FILE *fp;
 	char filename[512];
-
 	sprintf(filename, "%s/frontend.cfg", szAppHomePath);
-
 	printf("Writing: %s\n", filename);
-	fp = fopen(filename, "w");
-
-	fputs("# FBA frontend options\n",fp);
-	fputs("\n",fp);
-	sprintf((char*)g_string, "delay_speed %d\n", cfg.delayspeed);
-	fputs(g_string,fp);
-	sprintf((char*)g_string, "repeat_speed %d\n", cfg.repeatspeed);
-	fputs(g_string,fp);
-	sprintf((char*)g_string, "list %d\n",cfg.list);
-	fputs(g_string,fp);
-	sprintf((char*)g_string, "shadow %d\n", cfg.FXshadow);
-	fputs(g_string,fp);
-	sprintf((char*)g_string, "skin %d\n", cfg.skin);
-	fputs(g_string,fp);
-
+	if ((fp = fopen(filename, "w")) != NULL) {
+		fputs("# FBA frontend options\n",fp);
+		fputs("\n",fp);
+		sprintf((char*)g_string, "delay_speed %d\n", cfg.delayspeed);
+		fputs(g_string,fp);
+		sprintf((char*)g_string, "repeat_speed %d\n", cfg.repeatspeed);
+		fputs(g_string,fp);
+		sprintf((char*)g_string, "list %d\n",cfg.list);
+		fputs(g_string,fp);
+		sprintf((char*)g_string, "shadow %d\n", cfg.FXshadow);
+		fputs(g_string,fp);
+		sprintf((char*)g_string, "skin %d\n", cfg.skin);
+		fputs(g_string,fp);
+	}
 	fclose(fp);
 }
