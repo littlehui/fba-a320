@@ -105,7 +105,7 @@ void sdl_input_read() // called from do_keypad()
 			else if (event.key.keysym.sym == SDLK_p) keypc &= ~BUTTON_PAUSE;
 			else if (event.key.keysym.sym == SDLK_s) keypc &= ~BUTTON_QSAVE;
 			else if (event.key.keysym.sym == SDLK_l) keypc &= ~BUTTON_QLOAD;
-			else if (event.key.keysym.sym == SDLK_m) keypc &= ~BUTTON_MENU;
+			else if (event.key.keysym.sym == SDLK_END) keypc &= ~BUTTON_MENU;
 		} else if (event.type == SDL_KEYDOWN) {
 			// FBA keypresses
 			if (event.key.keysym.sym == keymap.up) keypad |= KEYPAD_UP;
@@ -134,7 +134,7 @@ void sdl_input_read() // called from do_keypad()
 			else if (event.key.keysym.sym == SDLK_p) keypc |= BUTTON_PAUSE;
 			else if (event.key.keysym.sym == SDLK_s) keypc |= BUTTON_QSAVE;
 			else if (event.key.keysym.sym == SDLK_l) keypc |= BUTTON_QLOAD;
-			else if (event.key.keysym.sym == SDLK_m) keypc |= BUTTON_MENU;
+			else if (event.key.keysym.sym == SDLK_END) keypc |= BUTTON_MENU;
 		}
 	}
 }
