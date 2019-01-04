@@ -40,7 +40,8 @@ extern char **environ;
 
 SDL_Event event;
 
-extern SDL_Surface *RS97screen;
+// extern SDL_Surface *RS97screen;
+extern SDL_Surface *screen;
 SDL_Surface *gui_screen = NULL;
 SDL_Surface *bg = NULL;
 SDL_Surface *bgs = NULL;
@@ -91,8 +92,10 @@ void redraw_screen(void)
 {
 	SDL_Delay(16);
 	// SDL_Flip(gui_screen);
-	SDL_SoftStretch(gui_screen, NULL, RS97screen, 0);
-	SDL_Flip(RS97screen);
+	// SDL_SoftStretch(gui_screen, NULL, RS97screen, 0);
+	// SDL_Flip(RS97screen);
+	SDL_SoftStretch(gui_screen, NULL, screen, 0);
+	SDL_Flip(screen);
 }
 
 void free_memory(void)
@@ -906,8 +909,11 @@ void ss_prog_run(void)
 						SDL_InitSubSystem(SDL_INIT_VIDEO);
 					}
 
-					RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
-					gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
+					// RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
+					// gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
+
+					gui_screen = SDL_SetVideoMode(320, 240, 16, SDL_HWSURFACE | SDL_DOUBLEBUF);
+					// gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 					SDL_ShowCursor(0);
 
 					prep_bg();
@@ -1156,8 +1162,9 @@ void GuiRun()
 	// fill data with data
 	gui_sort_romlist();
 
-	RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
-	gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
+	// RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
+	// gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
+	gui_screen = SDL_SetVideoMode(320, 240, 16, SDL_SWSURFACE | SDL_DOUBLEBUF);
 
 	SDL_ShowCursor(0);
 	SDL_JoystickOpen(0);

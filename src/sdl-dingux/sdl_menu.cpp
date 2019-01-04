@@ -43,7 +43,7 @@
 
 /* SDL declarations */
 extern SDL_Surface *screen;
-extern SDL_Surface *RS97screen;
+// extern SDL_Surface *RS97screen;
 SDL_Surface *menuSurface = NULL; // menu rendering
 
 /* type definitions */
@@ -115,8 +115,11 @@ void gui_Flip()
 
 	// SDL_BlitSurface(menuSurface, 0, screen, &dstrect);
 	// SDL_Flip(screen);
-	SDL_SoftStretch(menuSurface, NULL, RS97screen, 0);
-	SDL_Flip(RS97screen);
+	// SDL_SoftStretch(menuSurface, NULL, RS97screen, 0);
+	// SDL_Flip(RS97screen);
+
+	SDL_SoftStretch(menuSurface, NULL, screen, 0);
+	SDL_Flip(screen);
 }
 
 /*
