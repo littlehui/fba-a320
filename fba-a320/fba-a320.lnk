@@ -1,6 +1,6 @@
 title=FBA A320
 description=FinalBurnAdvance Emulator
-exec=/home/retrofw/emus/fba-a320/fbasdl.dge
+exec=/home/retrofw/emus/fba-a320/fba-a320.dge
 ipu_mode=1
 selectorbrowser=true
 selectordir=/home/retrofw/roms/fba
