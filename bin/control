@@ -1,0 +1,10 @@
+Package: fba-a320
+Version: 
+Description: Final Burn Alpha 0.2.96.86 for Dingux and OpenDingux. Based on ezxfba, fba2x and fba-pandora.
+Section: emus
+Priority: optional
+Maintainer: pingflood
+Architecture: mipsel
+Homepage: https://github.com/pingflood/fba-a320
+Depends:
+Source: https://github.com/pingflood/fba-a320

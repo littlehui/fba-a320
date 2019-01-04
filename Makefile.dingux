@@ -32,7 +32,7 @@ NAME = fbasdl.dge
 DEPEND = 1
 
 # Include features for debugging drivers
-DEBUG = 1
+#DEBUG = 1
 
 # Perl is available
 PERL = 1
