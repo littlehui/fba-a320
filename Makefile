@@ -351,11 +351,11 @@ ifeq ($(MAKELEVEL),0)
 ifdef DEPEND
 
 all:	init $(autdep) $(autobj)
-	@$(MAKE) -f Makefile.dingux
+	@$(MAKE) -f Makefile
 else
 
 all:	init $(autobj)
-	@$(MAKE) -f Makefile.dingux
+	@$(MAKE) -f Makefile
 endif
 else
 
@@ -381,9 +381,10 @@ $(NAME):	$(allobj)
 endif
 
 ipk: all
-	@rm -rf /tmp/.fba-a320-ipk/ && mkdir -p /tmp/.fba-a320-ipk/root/home/retrofw/emus/fba-a320 /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators
+	@rm -rf /tmp/.fba-a320-ipk/ && mkdir -p /tmp/.fba-a320-ipk/root/home/retrofw/emus/fba-a320 /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/systems
 	@cp -r fba-a320/skin fba-a320/fba-a320.dge fba-a320/fba-a320.png fba-a320/aliases.txt /tmp/.fba-a320-ipk/root/home/retrofw/emus/fba-a320
 	@cp fba-a320/fba-a320.lnk /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators
+	@cp fba-a320/cps1.fba-a320.lnk fba-a320/cps2.fba-a320.lnk fba-a320/neogeo.fba-a320.lnk /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/systems
 	@sed "s/^Version:.*/Version: $$(date +%Y%m%d)/" fba-a320/control > /tmp/.fba-a320-ipk/control
 	@tar --owner=0 --group=0 -czvf /tmp/.fba-a320-ipk/control.tar.gz -C /tmp/.fba-a320-ipk/ control
 	@tar --owner=0 --group=0 -czvf /tmp/.fba-a320-ipk/data.tar.gz -C /tmp/.fba-a320-ipk/root/ .
