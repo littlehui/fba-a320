@@ -619,8 +619,8 @@ ifdef	PERL
 	@rm -f -r $(driverlist)
 endif
 	@echo Removing executable file...
-	@rm -f $(NAME)
-
+	@rm -f fba-a320/$(NAME)
+	@rm -f fba-a320/fba-a320.ipk
 #
 #	Rule to force recompilation of any target that depends on it
 #
