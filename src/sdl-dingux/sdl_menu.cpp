@@ -34,12 +34,12 @@
 
 #define color16(red, green, blue) ((red << 11) | (green << 5) | blue)
 
-#define COLOR_BG            color16(05, 03, 02)
+#define COLOR_BG            color16(0, 0, 0)
 #define COLOR_ROM_INFO      color16(22, 36, 26)
-#define COLOR_ACTIVE_ITEM   color16(31, 63, 31)
-#define COLOR_INACTIVE_ITEM color16(13, 40, 18)
+#define COLOR_ACTIVE_ITEM   color16(0xFF,0xFF,0x00)
+#define COLOR_INACTIVE_ITEM color16(0x80,0x80,0xFF)
 #define COLOR_FRAMESKIP_BAR color16(15, 31, 31)
-#define COLOR_HELP_TEXT     color16(16, 40, 24)
+#define COLOR_HELP_TEXT     color16(0x80,0x80,0xFF)
 
 /* SDL declarations */
 extern SDL_Surface *screen;
@@ -78,24 +78,24 @@ char *gui_SoundDrvNames[] = {"No sound", "LIBAO", "SDL mutex", "SDL"};
 char *gui_SoundSampleRates[] = {"11025", "16000", "22050", "32000", "44100"};
 
 MENUITEM gui_MainMenuItems[] = {
-	{(char *)"Continue", NULL, 0, NULL, &call_continue},
+	// {(char *)"Continue", NULL, 0, NULL, &call_continue},
+	{(char *)"Load state              ", &nSavestateSlot, 9, NULL, &gui_LoadState},
+	{(char *)"Save state              ", &nSavestateSlot, 9, NULL, &gui_Savestate},
 	{(char *)"Key config", NULL, 0, NULL, &gui_KeyMenuRun},
-	{(char *)"Load state: ", &nSavestateSlot, 9, NULL, &gui_LoadState},
-	{(char *)"Save state: ", &nSavestateSlot, 9, NULL, &gui_Savestate},
 	{(char *)"Reset", NULL, 0, NULL, &gui_reset},
 	{(char *)"Exit", NULL, 0, NULL, &call_exit},
 	{NULL, NULL, 0, NULL, NULL}
 };
 
-MENU gui_MainMenu = { 6, 0, (MENUITEM *)&gui_MainMenuItems };
+MENU gui_MainMenu = { 5, 0, (MENUITEM *)&gui_MainMenuItems };
 
 MENUITEM gui_KeyMenuItems[] = {
-	{(char *)"Fire 1   - ", &gui_KeyData[0], 5, (char **)&gui_KeyNames, NULL},
-	{(char *)"Fire 2   - ", &gui_KeyData[1], 5, (char **)&gui_KeyNames, NULL},
-	{(char *)"Fire 3   - ", &gui_KeyData[2], 5, (char **)&gui_KeyNames, NULL},
-	{(char *)"Fire 4   - ", &gui_KeyData[3], 5, (char **)&gui_KeyNames, NULL},
-	{(char *)"Fire 5   - ", &gui_KeyData[4], 5, (char **)&gui_KeyNames, NULL},
-	{(char *)"Fire 6   - ", &gui_KeyData[5], 5, (char **)&gui_KeyNames, NULL},
+	{(char *)"Button 1                ", &gui_KeyData[0], 5, (char **)&gui_KeyNames, NULL},
+	{(char *)"Button 2                ", &gui_KeyData[1], 5, (char **)&gui_KeyNames, NULL},
+	{(char *)"Button 3                ", &gui_KeyData[2], 5, (char **)&gui_KeyNames, NULL},
+	{(char *)"Button 4                ", &gui_KeyData[3], 5, (char **)&gui_KeyNames, NULL},
+	{(char *)"Button 5                ", &gui_KeyData[4], 5, (char **)&gui_KeyNames, NULL},
+	{(char *)"Button 6                ", &gui_KeyData[5], 5, (char **)&gui_KeyNames, NULL},
 	{NULL, NULL, 0, NULL, NULL}
 };
 
@@ -185,16 +185,16 @@ void ShowMenu(MENU *menu)
 		int fg_color;
 
 		if(menu->itemCur == i) fg_color = COLOR_ACTIVE_ITEM; else fg_color = COLOR_INACTIVE_ITEM;
-		ShowMenuItem(80, (18 + i) * 8, mi, fg_color);
+		ShowMenuItem(50, 50 + i * 12, mi, fg_color);
 	}
 
 	// show preview screen
 	//ShowPreview(menu);
 
 	// print info string
-	DrawString("Press B to return to game", COLOR_HELP_TEXT, COLOR_BG, 56, 220);
-	DrawString("FinalBurn Alpha for OpenDingux", COLOR_HELP_TEXT, COLOR_BG, 44, 2);
-	DrawString("Based on FBA " VERSION " (c) Team FB Alpha", COLOR_HELP_TEXT, COLOR_BG, 0, 12);
+	// DrawString("Press B to return to game", COLOR_HELP_TEXT, COLOR_BG, 56, 220);
+	DrawString("FinalBurn Alpha " VERSION, COLOR_HELP_TEXT, COLOR_BG, 50, 4);
+	DrawString("(c) Team FB Alpha", COLOR_HELP_TEXT, COLOR_BG, 80, 226);
 }
 
 /*
