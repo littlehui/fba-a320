@@ -589,7 +589,14 @@ void VideoTrans()
 int VideoInit()
 {
 	// Initialize SDL
-	int flags = (options.vsync ? SDL_HWSURFACE | SDL_DOUBLEBUF : SDL_SWSURFACE);
+	int flags = (options.vsync ? SDL_HWSURFACE | 
+#ifdef SDL_TRIPLEBUF
+    SDL_TRIPLEBUF
+#else
+    SDL_DOUBLEBUF
+#endif
+		: 
+		SDL_SWSURFACE);
 
 	if(!(SDL_WasInit(SDL_INIT_VIDEO) & SDL_INIT_VIDEO)) {
 		SDL_InitSubSystem(SDL_INIT_VIDEO);
@@ -598,7 +605,7 @@ int VideoInit()
 	// RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_HWSURFACE);
 	// screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 	// screen = SDL_SetVideoMode(320, 240, 16, flags);
-	screen = SDL_SetVideoMode(320, 240, 16, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	screen = SDL_SetVideoMode(320, 240, 16, flags);
 	if (0) {
 		int i = 0; // 0 - 320x240, 1 - 400x240, 2 - 480x272
 		int surfacewidth, surfaceheight;
@@ -682,6 +689,8 @@ void VideoExit()
 
 void VideoClear()
 {
+	SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255));
+	VideoFlip();
 	SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255));
 	VideoFlip();
 	// SDL_Flip(screen);
