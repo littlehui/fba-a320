@@ -428,8 +428,6 @@ int BzipOpen(bool bootApp)
 	if (!bootApp) {
 		// Check the roms to see if the code, graphics etc are complete
 		CheckRoms();
-
-
 		BurnExtLoadRom = BzipBurnLoadRom;								// Okay to call our function to load each rom
 
 	} else {

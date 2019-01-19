@@ -90,6 +90,9 @@ void show_rom_error_text(char *szText)
 
 	SDL_Event event;
 	while(event.type != SDL_KEYDOWN) SDL_WaitEvent(&event);
+
+	SDL_Quit();
+	exit(1);
 	GameLooping = false;
 }
 

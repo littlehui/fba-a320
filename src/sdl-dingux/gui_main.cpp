@@ -126,7 +126,7 @@ int exit_prog(void)
 	free_memory();
 
 	SDL_JoystickClose(0);
-	//SDL_Quit();
+	SDL_Quit();
 
 	return 0;
 
