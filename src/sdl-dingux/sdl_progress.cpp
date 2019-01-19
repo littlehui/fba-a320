@@ -56,7 +56,7 @@ void show_rom_loading_text(char *szText, int nSize, int nTotalSize)
 	DrawRect((uint16 *)load_screen->pixels, doffset, 120, 300, 20, 0, fwidth);
 
 	if (szText)
-		DrawString2(load_screen, (const char*)szText, COLOR_TEXT, COLOR_BG, doffset, 120);
+		DrawString2(load_screen, (const char*)szText, COLOR_TEXT, COLOR_BG, doffset, 80);
 		// DrawString (szText, (uint16 *)load_screen->pixels, doffset, 120, fwidth);
 
 	if (nTotalSize == 0) {
@@ -87,7 +87,7 @@ void show_rom_error_text(char *szText)
 
 		// DrawString (szText, (uint16 *)load_screen->pixels, doffset, 180, fwidth);
 	// DrawString("Exiting - press any key", (uint16 *)load_screen->pixels, doffset, 200, fwidth);
-	DrawString2(load_screen, "Press any key to exit", COLOR_TEXT, COLOR_BG, 60, 200);
+	DrawString2(load_screen, "Press any key to exit", COLOR_TEXT, COLOR_BG, 60, 210);
 
 	blit_loading_screen();
 
