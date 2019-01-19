@@ -69,8 +69,6 @@ void show_rom_loading_text(char *szText, int nSize, int nTotalSize)
 		DrawRect((uint16 *)load_screen->pixels, doffset+1, 101, size * 278 / nTotalSize, 10, 0x00FFFF00, fwidth);
 	}
 
-	SDL_Event event;
-	while(SDL_PollEvent(&event));
 	blit_loading_screen();
 }
 
@@ -101,7 +99,7 @@ int ProgressCreate()
 	// if(!load_screen) ProgressDestroy();
 	load_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, fwidth, fheight, 16, 0, 0, 0, 0);
 
-	show_rom_loading_text("Open Zip", 0, 0);
+	show_rom_loading_text("Loading...", 0, 0);
 }
 
 int ProgressDestroy()
