@@ -46,6 +46,13 @@ void blit_loading_screen()
 
 	// SDL_SoftStretch(load_screen, NULL, screen, 0);
 	SDL_Flip(screen);
+
+	SDL_FillRect(load_screen,NULL,SDL_MapRGB(load_screen->format,0x0,0x0,0x0));
+	DrawString2(load_screen, "FinalBurn Alpha " VERSION, COLOR_TEXT, COLOR_BG, 50, 4);
+	DrawString2(load_screen, "(c) Team FB Alpha", COLOR_TEXT, COLOR_BG, 80, 226);
+
+  // SDL_Flip(screen);
+
 }
 
 void show_rom_loading_text(char *szText, int nSize, int nTotalSize)
@@ -59,10 +66,11 @@ void show_rom_loading_text(char *szText, int nSize, int nTotalSize)
 		DrawString2(load_screen, (const char*)szText, COLOR_TEXT, COLOR_BG, doffset, 80);
 		// DrawString (szText, (uint16 *)load_screen->pixels, doffset, 120, fwidth);
 
+	DrawRect((uint16 *)load_screen->pixels, doffset, 100, 280, 12, 0x00FFFFFF, fwidth);
+	DrawRect((uint16 *)load_screen->pixels, doffset+1, 101, 278, 10, 0x00808080, fwidth);
+
 	if (nTotalSize == 0) {
 		size = 0;
-		DrawRect((uint16 *)load_screen->pixels, doffset, 100, 280, 12, 0x00FFFFFF, fwidth);
-		DrawRect((uint16 *)load_screen->pixels, doffset+1, 101, 278, 10, 0x00808080, fwidth);
 	} else {
 		size += nSize;
 		if (size > nTotalSize) size = nTotalSize;
@@ -102,8 +110,8 @@ int ProgressCreate()
 	// ProgressDestroy();
 	load_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, fwidth, fheight, 16, 0, 0, 0, 0);
 
-	DrawString2(load_screen, "FinalBurn Alpha " VERSION, COLOR_TEXT, COLOR_BG, 50, 4);
-	DrawString2(load_screen, "(c) Team FB Alpha", COLOR_TEXT, COLOR_BG, 80, 226);
+	// DrawString2(load_screen, "FinalBurn Alpha " VERSION, COLOR_TEXT, COLOR_BG, 50, 4);
+	// DrawString2(load_screen, "(c) Team FB Alpha", COLOR_TEXT, COLOR_BG, 80, 226);
 	// DrawString2(load_screen, "Loading...", COLOR_TEXT, COLOR_BG, 10, 105);
 	show_rom_loading_text("Open Zip", 0, 0);
 }
