@@ -81,9 +81,9 @@ void show_rom_error_text(char *szText)
 	DrawRect((uint16 *)load_screen->pixels, doffset, 120, 300, 20, 0, fwidth);
 
 	// DrawString("Error loading rom (not found):", (uint16 *)load_screen->pixels, doffset, 160, fwidth);
-	DrawString2(load_screen, "Error loading rom (not found):", COLOR_TEXT, COLOR_BG, doffset, 60);
+	DrawString2(load_screen, "Error loading rom:", COLOR_ERROR, COLOR_BG, doffset, 60);
 	if (szText)
-		DrawString2(load_screen, (const char*)szText, COLOR_TEXT, COLOR_BG, doffset, 80);
+		DrawString2(load_screen, (const char*)szText, COLOR_ERROR, COLOR_BG, doffset, 80);
 
 		// DrawString (szText, (uint16 *)load_screen->pixels, doffset, 180, fwidth);
 	// DrawString("Exiting - press any key", (uint16 *)load_screen->pixels, doffset, 200, fwidth);
