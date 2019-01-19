@@ -203,7 +203,8 @@ void gui_MenuRun(MENU *menu)
 	while(!done) {
 		mi = menu->m + menu->itemCur; // pointer to highlit menu option
 
-		while(SDL_PollEvent(&gui_event)) {
+		SDL_WaitEvent(&gui_event);
+		// while(SDL_PollEvent(&gui_event)) {
 			if(gui_event.type == SDL_KEYDOWN) {
 				// DINGOO A - apply parameter or enter submenu
 				if(gui_event.key.keysym.sym == SDLK_LCTRL) if(mi->itemOnA != NULL) (*mi->itemOnA)();
@@ -222,9 +223,9 @@ void gui_MenuRun(MENU *menu)
 					if(mi->itemPar != NULL && *mi->itemPar < mi->itemParMaxValue) *mi->itemPar += 1;
 				}
 			}
-		}
+		// }
 		if(!done) ShowMenu(menu); // show menu items
-		SDL_Delay(16);
+		// SDL_Delay(16);
 		gui_Flip();
 	}
 }

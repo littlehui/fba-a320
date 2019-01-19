@@ -44,7 +44,7 @@ void blit_loading_screen()
 	// SDL_SoftStretch(load_screen, NULL, RS97screen, 0);
 	// SDL_Flip(RS97screen);
 
-	SDL_SoftStretch(load_screen, NULL, screen, 0);
+	// SDL_SoftStretch(load_screen, NULL, screen, 0);
 	SDL_Flip(screen);
 }
 
