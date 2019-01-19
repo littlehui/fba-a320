@@ -42,11 +42,26 @@
 #ifndef _EMU_FONT_H_
 #define _EMU_FONT_H_
 
+#include <SDL/SDL.h>
+
+#define color16(red, green, blue) ((red << 11) | (green << 5) | blue)
+
+#define COLOR_BG            color16(0, 0, 0)
+#define COLOR_ROM_INFO      color16(22, 36, 26)
+#define COLOR_ACTIVE_ITEM   color16(0xFF,0xFF,0x00)
+#define COLOR_INACTIVE_ITEM color16(0x80,0x80,0xFF)
+#define COLOR_FRAMESKIP_BAR color16(15, 31, 31)
+#define COLOR_HELP_TEXT     color16(0x80,0x80,0xFF)
+#define COLOR_TEXT          color16(0xFF,0xFF,0xFF)
+
 typedef unsigned short 	uint16;
 typedef unsigned char 	uint8;
 
 void DisplayChar (uint16 *Screen, uint8 c, uint16 resW);
 void DrawString (const char *string, uint16 *screen, uint8 x, uint8 y, uint16 resW);
 void DrawRect ( uint16 *screen, int x, int y, int w, int h, int c, uint16 resW );
+
+void DrawChar(SDL_Surface *s, int x, int y, unsigned char a, int fg_color, int bg_color);
+void DrawString2(SDL_Surface *sfc, const char *s, unsigned short fg_color, unsigned short bg_color, int x, int y);
 
 #endif	// _EMU_FONT_H_

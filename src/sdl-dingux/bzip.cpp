@@ -248,7 +248,7 @@ static int __cdecl BzipBurnLoadRom(unsigned char* Dest, int* pnWrote, int i)
 
 	if (RomFind[i].nState == 0) {							// Rom not found in zip at all
 		TCHAR szTemp[128] = _T("");
-		_stprintf(szTemp, "%s (not found)\n",szText);
+		_sntprintf(szTemp, sizeof(szTemp), "%s (not found)\n",szText);
 		fprintf(stderr,szTemp);
 		ProgressError(szTemp, 1);
 		return 1;
