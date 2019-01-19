@@ -206,7 +206,9 @@ void gui_MenuRun(MENU *menu)
 		if(!done) ShowMenu(menu); // show menu items
 		gui_Flip();
 
-		while(gui_event.type != SDL_KEYDOWN) SDL_WaitEvent(&gui_event);
+		SDL_WaitEvent(&gui_event);
+		
+		if (gui_event.type != SDL_KEYDOWN) continue;
 
 		// DINGOO A - apply parameter or enter submenu
 		if(gui_event.key.keysym.sym == SDLK_LCTRL) if(mi->itemOnA != NULL) (*mi->itemOnA)();
