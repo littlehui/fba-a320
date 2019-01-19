@@ -98,8 +98,9 @@ void show_rom_error_text(char *szText)
 
 int ProgressCreate()
 {
-	if(!load_screen)
-		load_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, fwidth, fheight, 16, 0, 0, 0, 0);
+	// if(!load_screen)
+	// ProgressDestroy();
+	load_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, fwidth, fheight, 16, 0, 0, 0, 0);
 
 	DrawString2(load_screen, "FinalBurn Alpha " VERSION, COLOR_TEXT, COLOR_BG, 50, 4);
 	DrawString2(load_screen, "(c) Team FB Alpha", COLOR_TEXT, COLOR_BG, 80, 226);
