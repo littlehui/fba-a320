@@ -35,11 +35,11 @@ void blit_loading_screen()
 {
 	extern SDL_Surface *screen;
 	// extern SDL_Surface *RS97screen;
-	// SDL_Rect dst;
+	SDL_Rect dst;
 
-	// dst.x = (screen->w - 320) / 2;
-	// dst.y = (screen->h - 240) / 2;
-	// SDL_BlitSurface(load_screen, NULL, screen, &dst);
+	dst.x = (screen->w - 320) / 2;
+	dst.y = (screen->h - 240) / 2;
+	SDL_BlitSurface(load_screen, NULL, screen, &dst);
 	// SDL_Flip(screen);
 	// SDL_SoftStretch(load_screen, NULL, RS97screen, 0);
 	// SDL_Flip(RS97screen);
@@ -56,16 +56,17 @@ void show_rom_loading_text(char *szText, int nSize, int nTotalSize)
 	DrawRect((uint16 *)load_screen->pixels, doffset, 120, 300, 20, 0, fwidth);
 
 	if (szText)
-		DrawString (szText, (uint16 *)load_screen->pixels, doffset, 120, fwidth);
+		DrawString2(load_screen, (const char*)szText, COLOR_TEXT, COLOR_BG, doffset, 120);
+		// DrawString (szText, (uint16 *)load_screen->pixels, doffset, 120, fwidth);
 
 	if (nTotalSize == 0) {
 		size = 0;
-		DrawRect((uint16 *)load_screen->pixels, doffset, 140, 280, 12, 0x00FFFFFF, fwidth);
-		DrawRect((uint16 *)load_screen->pixels, doffset+1, 141, 278, 10, 0x00808080, fwidth);
+		DrawRect((uint16 *)load_screen->pixels, doffset, 100, 280, 12, 0x00FFFFFF, fwidth);
+		DrawRect((uint16 *)load_screen->pixels, doffset+1, 101, 278, 10, 0x00808080, fwidth);
 	} else {
 		size += nSize;
 		if (size > nTotalSize) size = nTotalSize;
-		DrawRect((uint16 *)load_screen->pixels, doffset+1, 141, size * 278 / nTotalSize, 10, 0x00FFFF00, fwidth);
+		DrawRect((uint16 *)load_screen->pixels, doffset+1, 101, size * 278 / nTotalSize, 10, 0x00FFFF00, fwidth);
 	}
 
 	SDL_Event event;
@@ -79,10 +80,14 @@ void show_rom_error_text(char *szText)
 
 	DrawRect((uint16 *)load_screen->pixels, doffset, 120, 300, 20, 0, fwidth);
 
-	DrawString("Error loading rom (not found):", (uint16 *)load_screen->pixels, doffset, 160, fwidth);
+	// DrawString("Error loading rom (not found):", (uint16 *)load_screen->pixels, doffset, 160, fwidth);
+	DrawString2(load_screen, "Error loading rom (not found):", COLOR_TEXT, COLOR_BG, doffset, 60);
 	if (szText)
-		DrawString (szText, (uint16 *)load_screen->pixels, doffset, 180, fwidth);
-	DrawString("Exiting - press any key", (uint16 *)load_screen->pixels, doffset, 200, fwidth);
+		DrawString2(load_screen, (const char*)szText, COLOR_TEXT, COLOR_BG, doffset, 80);
+
+		// DrawString (szText, (uint16 *)load_screen->pixels, doffset, 180, fwidth);
+	// DrawString("Exiting - press any key", (uint16 *)load_screen->pixels, doffset, 200, fwidth);
+	DrawString2(load_screen, "Press any key to exit", COLOR_TEXT, COLOR_BG, 60, 200);
 
 	blit_loading_screen();
 
@@ -96,9 +101,9 @@ int ProgressCreate()
 	if(!load_screen)
 		load_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, fwidth, fheight, 16, 0, 0, 0, 0);
 
-	DrawString("Finalburn Alpha for OpenDingux (v " VERSION ")", (uint16 *)load_screen->pixels, 10, 20, fwidth);
-	DrawString("Based on FinalBurnAlpha", (uint16 *)load_screen->pixels, 10, 35, fwidth);
-	DrawString("Now loading ... ", (uint16 *)load_screen->pixels, 10, 105, fwidth);
+	DrawString2(load_screen, "FinalBurn Alpha " VERSION, COLOR_TEXT, COLOR_BG, 50, 4);
+	DrawString2(load_screen, "(c) Team FB Alpha", COLOR_TEXT, COLOR_BG, 80, 226);
+	// DrawString2(load_screen, "Loading...", COLOR_TEXT, COLOR_BG, 10, 105);
 	show_rom_loading_text("Open Zip", 0, 0);
 }
 
