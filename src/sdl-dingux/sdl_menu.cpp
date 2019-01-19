@@ -34,15 +34,6 @@
 #define _a(A) _s(A)
 #define VERSION _a(VER_MAJOR.VER_MINOR.VER_BETA.VER_ALPHA)
 
-// #define color16(red, green, blue) ((red << 11) | (green << 5) | blue)
-
-// #define COLOR_BG            color16(0, 0, 0)
-// #define COLOR_ROM_INFO      color16(22, 36, 26)
-// #define COLOR_ACTIVE_ITEM   color16(0xFF,0xFF,0x00)
-// #define COLOR_INACTIVE_ITEM color16(0x80,0x80,0xFF)
-// #define COLOR_FRAMESKIP_BAR color16(15, 31, 31)
-// #define COLOR_HELP_TEXT     color16(0x80,0x80,0xFF)
-
 /* SDL declarations */
 extern SDL_Surface *screen;
 // extern SDL_Surface *RS97screen;
@@ -186,7 +177,7 @@ void ShowMenu(MENU *menu)
 	for(i = 0; i < menu->itemNum; i++, mi++) {
 		int fg_color;
 
-		if(menu->itemCur == i) fg_color = COLOR_ACTIVE_ITEM; else fg_color = COLOR_INACTIVE_ITEM;
+		if(menu->itemCur == i) fg_color = COLOR_ACTIVE_ITEM; else fg_color = COLOR_TEXT;
 		ShowMenuItem(50, 50 + i * 12, mi, fg_color);
 	}
 
@@ -195,8 +186,8 @@ void ShowMenu(MENU *menu)
 
 	// print info string
 	// DrawString("Press B to return to game", COLOR_HELP_TEXT, COLOR_BG, 56, 220);
-	DrawString2(menuSurface, "FinalBurn Alpha " VERSION, COLOR_HELP_TEXT, COLOR_BG, 50, 4);
-	DrawString2(menuSurface, "(c) Team FB Alpha", COLOR_HELP_TEXT, COLOR_BG, 80, 226);
+	DrawString2(menuSurface, "FinalBurn Alpha " VERSION, COLOR_TEXT, COLOR_BG, 50, 4);
+	DrawString2(menuSurface, "(c) Team FB Alpha", COLOR_TEXT, COLOR_BG, 80, 226);
 }
 
 /*

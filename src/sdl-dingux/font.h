@@ -48,10 +48,11 @@
 
 #define COLOR_BG            color16(0, 0, 0)
 #define COLOR_ROM_INFO      color16(22, 36, 26)
-#define COLOR_ACTIVE_ITEM   color16(0xFF,0xFF,0x00)
-#define COLOR_INACTIVE_ITEM color16(0x80,0x80,0xFF)
+#define COLOR_ACTIVE_ITEM   color16(0xFF,0x80,0x80)
+#define COLOR_INACTIVE_ITEM color16(0xFF,0xFF,0xFF)
 #define COLOR_FRAMESKIP_BAR color16(15, 31, 31)
-#define COLOR_HELP_TEXT     color16(0x80,0x80,0xFF)
+#define COLOR_HELP_TEXT     color16(0xFF,0xFF,0xFF)
+#define COLOR_ERROR         color16(0xFF,0x00,0x00)
 #define COLOR_TEXT          color16(0xFF,0xFF,0xFF)
 
 typedef unsigned short 	uint16;
