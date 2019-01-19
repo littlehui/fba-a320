@@ -227,20 +227,20 @@ static int __cdecl BzipBurnLoadRom(unsigned char* Dest, int* pnWrote, int i)
 	}
 	
 	sprintf(szText, "%s: %dKb ", pszRomName, ri.nLen/1024 );
-	if (ri.nType & (BRF_PRG | BRF_GRA | BRF_SND | BRF_BIOS)) {
+	// if (ri.nType & (BRF_PRG | BRF_GRA | BRF_SND | BRF_BIOS)) {
 		if (ri.nType & BRF_BIOS) {
 			sprintf (szText + strlen(szText), "BIOS");
-		}
+		} else
 		if (ri.nType & BRF_PRG) {
 			sprintf (szText + strlen(szText), "PRG");
-		}
+		} else
 		if (ri.nType & BRF_GRA) {
 			sprintf (szText + strlen(szText), "GFX");
-		}
+		} else
 		if (ri.nType & BRF_SND) {
 			sprintf (szText + strlen(szText), "SND");
 		}
-	}
+	// }
 
 	ProgressUpdateBurner(ri.nLen ? 1.0 / ((double)nTotalSize / ri.nLen) : 0, szText, 0);
 	// FIXME: eliminate later in favor of ProgressUpdateBurner
