@@ -226,19 +226,19 @@ static int __cdecl BzipBurnLoadRom(unsigned char* Dest, int* pnWrote, int i)
 		pszRomName = "unknown";
 	}
 	
-	sprintf(szText, "%-12s ... %4dKb", pszRomName, ri.nLen/1024 );
+	sprintf(szText, "%s: %dKb ", pszRomName, ri.nLen/1024 );
 	if (ri.nType & (BRF_PRG | BRF_GRA | BRF_SND | BRF_BIOS)) {
 		if (ri.nType & BRF_BIOS) {
-			sprintf (szText + strlen(szText), " %s", "BIOS ");
+			sprintf (szText + strlen(szText), "BIOS");
 		}
 		if (ri.nType & BRF_PRG) {
-			sprintf (szText + strlen(szText), " %s", "program ");
+			sprintf (szText + strlen(szText), "PRG");
 		}
 		if (ri.nType & BRF_GRA) {
-			sprintf (szText + strlen(szText), " %s", "graphics ");
+			sprintf (szText + strlen(szText), "GFX");
 		}
 		if (ri.nType & BRF_SND) {
-			sprintf (szText + strlen(szText), " %s", "sound ");
+			sprintf (szText + strlen(szText), "SND");
 		}
 	}
 
@@ -248,7 +248,7 @@ static int __cdecl BzipBurnLoadRom(unsigned char* Dest, int* pnWrote, int i)
 
 	if (RomFind[i].nState == 0) {							// Rom not found in zip at all
 		TCHAR szTemp[128] = _T("");
-		_sntprintf(szTemp, sizeof(szTemp), "%s (not found)\n",szText);
+		_sntprintf(szTemp, sizeof(szTemp), "%s (not found)",szText);
 		fprintf(stderr,szTemp);
 		ProgressError(szTemp, 1);
 		return 1;
@@ -259,7 +259,7 @@ static int __cdecl BzipBurnLoadRom(unsigned char* Dest, int* pnWrote, int i)
 		ZipClose();
 		nCurrentZip = -1;
 		if (ZipOpen(szBzipName[nWantZip])) {
-			printf("%s (open zip err: %s)\n", szText, szBzipName[nWantZip]);
+			printf("%s (zip err: %s)\n", szText, szBzipName[nWantZip]);
 			return 1;
 		}
 		nCurrentZip = nWantZip;
