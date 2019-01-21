@@ -1,7 +1,6 @@
 title=FBA A320
 description=FinalBurnAdvance Emulator
 exec=/home/retrofw/emus/fba-a320/fba-a320.dge
-selectorbrowser=true
 selectordir=/home/retrofw/roms/fba
 selectorfilter=.zip
 selectoraliases=/home/retrofw/emus/fba-a320/aliases.txt

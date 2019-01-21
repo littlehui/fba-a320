@@ -1,7 +1,6 @@
 title=CPS1
 description=FinalBurnAdvance Emulator
 exec=/home/retrofw/emus/fba-a320/fba-a320.dge
-selectorbrowser=true
 selectordir=/home/retrofw/roms/cps1
 selectorfilter=.zip
 selectoraliases=/home/retrofw/emus/fba-a320/aliases.txt
