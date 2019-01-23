@@ -9,7 +9,7 @@
 #
 
 # Specify the name of the executable file, without ".exe"
-NAME = fba-a320.dge
+NAME = fba-a320.bin
 
 # Check for changes in header files
 DEPEND = 1

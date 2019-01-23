@@ -12,3 +12,4 @@ obj
 src/generated/*
 gamelist.txt
 *.ipk
+*.bin
