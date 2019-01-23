@@ -91,11 +91,11 @@ void save_lastsel();
 void redraw_screen(void)
 {
 	SDL_Delay(16);
-	// SDL_Flip(gui_screen);
+	SDL_Flip(gui_screen);
 	// SDL_SoftStretch(gui_screen, NULL, RS97screen, 0);
 	// SDL_Flip(RS97screen);
-	SDL_SoftStretch(gui_screen, NULL, screen, 0);
-	SDL_Flip(screen);
+	// SDL_SoftStretch(gui_screen, NULL, screen, 0);
+	// SDL_Flip(screen);
 }
 
 void free_memory(void)
