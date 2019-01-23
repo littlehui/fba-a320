@@ -9,7 +9,7 @@
 #
 
 # Specify the name of the executable file, without ".exe"
-NAME = fbasdl
+NAME = fba-a320.bin
 
 # Check for changes in header files
 DEPEND = 1
@@ -347,11 +347,11 @@ ifeq ($(MAKELEVEL),0)
 ifdef DEPEND
 
 all:	init $(autdep) $(autobj)
-	@$(MAKE) -f Makefile
+	@$(MAKE) -f Makefile.pc
 else
 
 all:	init $(autobj)
-	@$(MAKE) -f Makefile
+	@$(MAKE) -f Makefile.pc
 endif
 else
 
@@ -370,10 +370,10 @@ ifeq ($(MAKELEVEL),1)
 $(NAME):	$(allobj)
 	@echo
 	@echo Linking executable $(NAME)...
-	@mkdir -p bin
-	@$(LD) $(CFLAGS) $(LDFLAGS) -o bin/$@ $^ $(lib)
-	@mkdir -p bin/skin
-	@cp src/sdl-dingux/skin/*.png bin/skin/
+	@mkdir -p fba-a320
+	@$(LD) $(CFLAGS) $(LDFLAGS) -o fba-a320/$@ $^ $(lib)
+	@mkdir -p fba-a320/skin
+	@cp src/sdl-dingux/skin/*.png fba-a320/skin/
 endif
 
 #
