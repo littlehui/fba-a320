@@ -386,6 +386,7 @@ ipk: all
 	@cp fba-a320/fba-a320.lnk /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators
 	@cp fba-a320/cps1.fba-a320.lnk fba-a320/cps2.fba-a320.lnk fba-a320/neogeo.fba-a320.lnk /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/systems
 	@sed "s/^Version:.*/Version: $$(date +%Y%m%d)/" fba-a320/control > /tmp/.fba-a320-ipk/control
+	@cp fba-a320/conffiles /tmp/.fba-a320-ipk/
 	@tar --owner=0 --group=0 -czvf /tmp/.fba-a320-ipk/control.tar.gz -C /tmp/.fba-a320-ipk/ control
 	@tar --owner=0 --group=0 -czvf /tmp/.fba-a320-ipk/data.tar.gz -C /tmp/.fba-a320-ipk/root/ .
 	@echo 2.0 > /tmp/.fba-a320-ipk/debian-binary
