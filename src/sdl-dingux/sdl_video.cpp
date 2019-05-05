@@ -37,6 +37,9 @@ unsigned short *VideoBuffer = NULL; // screen buffer
 // SDL_Surface *RS97screen;
 SDL_Surface *screen;
 
+#define BW VideoBufferWidth
+#define BH VideoBufferHeight
+
 // --------------------------------
 
 static unsigned int myHighCol16(int r, int g, int b, int /* i */)
@@ -143,6 +146,82 @@ static void Blitf_512x256_to_320x240()
 	}
 }
 
+static void Blitr_512x256_to_320x240()
+{
+	// 512x256 rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += BW;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		// 32px -> 15px
+		mod = i % 15;
+		if (mod == 3 || mod == 11) {
+			--q;
+		}
+		q -= 2;
+		for (int it = 0; it < BW*BH; it += BW) {
+			q[it] = COLORMIX(q[it],q[it+1]);
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 4px -> 3px
+			if (j % 3 == 1) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 128;
+	}
+}
+
+static void Blitrf_512x256_to_320x240()
+{
+	// 512x256 flipped rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += (BH - 1) * BW - 1;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		// 32px -> 15px
+		mod = i % 15;
+		if (mod == 3 || mod == 11) {
+			++q;
+		}
+		q += 2;
+		for (int it = 0; it < BW*BH; it += BW) {
+			*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 4px -> 3px
+			if (j % 3 == 1) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 128;
+	}
+}
+
 static void Blit_512x224_to_320x240() 
 {
 	// galpinbl, hotpinbl 512x224
@@ -181,6 +260,84 @@ static void Blitf_512x224_to_320x240()
 	}
 }
 
+static void Blitr_512x224_to_320x240()
+{
+	// 512x224 rotate to 182x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += BW;
+	p += 69;
+	for (int i=0; i<240; i++) {
+		// 32px -> 15px
+		mod = i % 15;
+		if (mod == 7 || mod == 11) {
+			--q;
+		}
+		q -= 2;
+		for (int it = 0; it < BW*BH; it += BW) {
+			q[it] = COLORMIX(q[it],q[it+1]);
+		}
+
+		q1 = q;
+		for (int j=0; j<182; j++) {
+			// 16px -> 13px
+			mod = j % 13;
+			if (mod == 1 || mod == 5 || mod == 10) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 138;
+	}
+}
+
+static void Blitrf_512x224_to_320x240()
+{
+	// 512x224 flipped rotate to 182x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += (BH - 1) * BW - 1;
+	p += 69;
+	for (int i=0; i<240; i++) {
+		// 32px -> 15px
+		mod = i % 15;
+		if (mod == 3 || mod == 11) {
+			++q;
+		}
+		q += 2;
+		for (int it = 0; it < BW*BH; it += BW) {
+			*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+		}
+
+		q1 = q;
+		for (int j=0; j<182; j++) {
+			// 16px -> 13px
+			mod = j % 13;
+			if (mod == 1 || mod ==5 || mod == 10) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 138;
+	}
+}
+
 static void Blit_448x224_to_320x240() 
 {
 	// IGS 448x224
@@ -199,6 +356,44 @@ static void Blit_448x224_to_320x240()
 		}
 }
 
+static void Blitr_448x224_to_320x240()
+{
+	// 448x224 rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += BW;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 28px -> 15px
+		mod = i % 15;
+		if (mod != 6 && mod != 13) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 128;
+	}
+}
+
 static void Blit_384x256_to_320x240()
 {
 	// Irem 384x256
@@ -215,6 +410,44 @@ static void Blit_384x256_to_320x240()
 			p += 5;
 			q += 6;
 		}
+}
+
+static void Blitr_384x256_to_320x240()
+{
+	// 384x256 rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += BW;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 8px -> 5px
+		mod = i % 5;
+		if (mod != 1 && mod != 3) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 4px -> 3px
+			if (j % 3 == 1) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 128;
+	}
 }
 
 static void Blit_384x240_to_320x240() 
@@ -253,6 +486,83 @@ static void Blitf_384x240_to_320x240()
 		}
 }
 
+static void Blitr_384x240_to_320x240()
+{
+	// 384x240 rotate to 180x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += BW;
+	p += 70;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 8px -> 5px
+		mod = i % 5;
+		if (mod != 1 && mod != 3) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<180; j++) {
+			// 8px -> 6px
+			if ((j % 6) % 3 == 1) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 140;
+	}
+}
+
+static void Blitrf_384x240_to_320x240()
+{
+	// 384x240 flipped rotate to 180x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += (BH - 1) * BW - 1;
+	p += 70;
+	for (int i=0; i<240; i++) {
+		++q;
+		// 8px -> 5px
+		mod = i % 5;
+		if (mod != 1 && mod != 3) {
+			++q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<180; j++) {
+			// 8px -> 6px
+			mod = j % 6;
+			if (mod == 1 || mod == 4) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 140;
+	}
+}
+
 static void Blit_384x224_to_320x240() 
 {
 	// CPS1 & CPS2 384x224
@@ -287,6 +597,82 @@ static void Blitf_384x224_to_320x240()
 			p += 5;
 			q -= 6;
 		}
+}
+
+static void Blitr_384x224_to_320x240()
+{
+	// CPS1 & CPS2 384x224 rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += BW;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 8px -> 5px
+		mod = i % 5;
+		if (mod != 1 && mod != 3) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 128;
+	}
+}
+
+static void Blitrf_384x224_to_320x240()
+{
+	// 384x224 flipped rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += (BH - 1) * BW - 1;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		++q;
+		// 8px -> 5px
+		mod = i % 5;
+		if (mod != 1 && mod != 3) {
+			++q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 128;
+	}
 }
 
 static void Blit_380x224_to_320x240() 
@@ -393,6 +779,42 @@ static void Blit_352x240_to_320x240()
 		}
 }
 
+static void Blitr_352x240_to_320x240()
+{
+	// 352x240 rotate to 180x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 70;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 22px -> 15px
+		if ((i % 15) % 2 != 0) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<180; j++) {
+			// 8px -> 6px
+			if ((j % 6) % 3 == 1) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 140;
+	}
+}
+
 static void Blit_336x240_to_320x240() 
 {
 	// Atari 336x240
@@ -434,6 +856,447 @@ static void Blit_320x240_to_320x240()
 	memcpy( p, q, 320 * 240 * 2 );
 }
 
+static void Blitr_320x240_to_320x240()
+{
+	// 320x240 rotate to 180x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 70;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 4px -> 3px
+		if (i % 3 == 1) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<180; j++) {
+			// 4px -> 3px
+			if (j % 3 == 1) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 140;
+	}
+}
+
+static void Blitrf_320x240_to_320x240()
+{
+	// 320x240 flipped rotate to 180x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += (BH - 1) * BW - 1;
+	p += 70;
+	for (int i=0; i<240; i++) {
+		++q;
+		// 4px -> 3px
+		if (i % 3 == 1) {
+			++q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<180; j++) {
+			// 4px -> 3px
+			if (j % 3 == 1) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 140;
+	}
+}
+
+static void Blitr_320x224_to_320x240()
+{
+	// 320x224 rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 4px -> 3px
+		if (i % 3 == 1) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 128;
+	}
+}
+
+static void Blitrf_320x224_to_320x240()
+{
+	// 320x224 flipped rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += (BH - 1) * BW - 1;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		++q;
+		// 4px -> 3px
+		if (i % 3 == 1) {
+			++q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 128;
+	}
+}
+
+static void Blitr_304x224_to_320x240()
+{
+	// 304x224 rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += BW;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 19px -> 15px
+		mod = i % 15;
+		if (mod == 2 || mod == 6 || mod == 10 || mod == 14) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 128;
+	}
+}
+
+static void Blitrf_304x224_to_320x240()
+{
+	// 304x224 flipped rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += (BH - 1) * BW - 1;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		++q;
+		// 19px -> 15px
+		mod = i % 15;
+		if (mod == 2 || mod == 6 || mod == 10 || mod == 14) {
+			++q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 128;
+	}
+}
+
+static void Blitr_288x224_to_320x240()
+{
+	// 288x224 rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 6px -> 5px
+		if (i % 5 == 2) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 128;
+	}
+}
+
+static void Blitrf_288x224_to_320x240()
+{
+	// 288x224 flipped rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += (BH - 1) * BW - 1;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		++q;
+		// 6px -> 5px
+		if (i % 5 == 2) {
+			++q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 128;
+	}
+}
+
+static void Blitr_280x240_to_320x240()
+{
+	// flipped
+	// 280x240 rotate to 180x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 70;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 7px -> 6px
+		if (i % 6 == 2) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<180; j++) {
+			// 8px -> 6px
+			if ((j % 6) % 3 == 1) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 140;
+	}
+}
+
+static void Blitr_280x224_to_320x240()
+{
+	// flipped
+	// 280x224 rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 7px -> 6px
+		if (i % 6 == 2) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 128;
+	}
+}
+
+static void Blitrf_280x224_to_320x240()
+{
+	// 280x224 flipped rotate to 192x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += (BH - 1) * BW - 1;
+	p += 64;
+	for (int i=0; i<240; i++) {
+		++q;
+		// 7px -> 6px
+		if (i % 6 == 2) {
+			++q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<192; j++) {
+			// 7px -> 6px
+			if (j % 6 == 3) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 128;
+	}
+}
+
+static void Blitr_272x236_to_320x240()
+{
+	// 272x236 rotate to 208x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+	int mod = 0;
+
+	q += BW;
+	p += 56;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 17px -> 15px
+		mod = i % 15;
+		if (mod == 4 || mod == 11) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<208; j++) {
+			// 59px -> 52px
+			mod = j % 52;
+			if (mod == 3 || mod == 11 || mod == 18 || mod == 25 || mod == 33 || mod == 40 || mod == 48) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 112;
+	}
+}
+
 static void Blit_256x256_to_320x240() 
 {
 	// 256x256
@@ -458,6 +1321,322 @@ static void Blitf_256x256_to_320x240()
 		}
 		p += 64;
 		if(i % 16 == 0) q -= 256;
+	}
+}
+
+static void Blitr_256x256_to_320x240()
+{
+	// 256x256 rotate to 240x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 40;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 16px -> 15px
+		if (i % 15 == 7) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<240; j++) {
+			// 16px -> 15px
+			if (j % 15 == 7) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 80;
+	}
+}
+
+static void Blitrf_256x256_to_320x240()
+{
+	// 256x256 flipped rotate to 240x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += (BH - 1) * BW - 1;
+	p += 40;
+	for (int i=0; i<240; i++) {
+		++q;
+		// 16px -> 15px
+		if (i % 15 == 7) {
+			++q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<240; j++) {
+			// 16px -> 15px
+			if (j % 15 == 7) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 80;
+	}
+}
+
+static void Blitr_256x248_to_320x240()
+{
+	// 256x248 rotate to 232x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += 256;
+	p += 44;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 16px -> 15px
+		if (i % 15 == 7) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<232; j++) {
+			// 31px -> 29px
+			if ((j % 29) % 15 == 7) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 88;
+	}
+}
+
+static void Blitr_256x240_to_320x240()
+{
+	// 256x240 rotate to 225x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 47;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 16px -> 15px
+		if (i % 15 == 7) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<225; j++) {
+			// 16px -> 15px
+			if (j % 15 == 7) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 95;
+	}
+}
+
+static void Blitrf_256x240_to_320x240()
+{
+	// 256x240 flipped rotate to 225x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += (BH - 1) * BW - 1;
+	p += 47;
+	for (int i=0; i<240; i++) {
+		++q;
+		// 16px -> 15px
+		if (i % 15 == 7) {
+			++q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<225; j++) {
+			// 16px -> 15px
+			if (j % 15 == 7) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 95;
+	}
+}
+
+static void Blitr_256x234_to_320x240()
+{
+	// 256x234 rotate to 221x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 49;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 16px -> 15px
+		if (i % 15 == 7) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<221; j++) {
+			// 18px -> 17px
+			if (j % 17 == 8) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 99;
+	}
+}
+
+static void Blitr_256x224_to_320x240()
+{
+	// 256x224 rotate to 210x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 55;
+	for (int i=0; i<240; i++) {
+		--q;
+		// 16px -> 15px
+		if (i % 15 == 7) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<210; j++) {
+			// 16px -> 15px
+			if (j % 15 == 7) {
+				p[0] = COLORMIX(q1[0],q1[BW]);
+				q1 += BW;
+			}
+			else {
+				p[0] = q1[0];
+			}
+			++p;
+			q1 += BW;
+		}
+		p += 110;
+	}
+}
+
+static void Blitrf_256x224_to_320x240()
+{
+	// 256x224 flipped rotate to 210x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += (BH - 1) * BW - 1;
+	p += 55;
+	for (int i=0; i<240; i++) {
+		++q;
+		// 16px -> 15px
+		if (i % 15 == 7) {
+			++q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				*(q-it) = COLORMIX(*(q-it),*(q-it-1));
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<210; j++) {
+			// 16px -> 15px
+			if (j % 15 == 7) {
+				*p = COLORMIX(*q1,*(q1-BW));
+				q1 -= BW;
+			}
+			else {
+				*p = *q1;
+			}
+			++p;
+			q1 -= BW;
+		}
+		p += 110;
+	}
+}
+
+static void Blitr_248x240_to_320x240()
+{
+	// 248x240 rotate to 240x240
+	unsigned short * p = &VideoBuffer[0];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += 40;
+	for (int i=0; i<240; i++) {
+		--q;
+		if (i % 30 == 15) {
+			--q;
+			for (int it = 0; it < BW*BH; it += BW) {
+				q[it] = COLORMIX(q[it],q[it+1]);
+			}
+		}
+
+		q1 = q;
+		for (int j=0; j<240; j++) {
+			p[0] = q1[0];
+			++p;
+			q1 += BW;
+		}
+		p += 80;
 	}
 }
 
@@ -544,6 +1723,46 @@ static void Blitf()
 	}
 }
 
+static unsigned int r_offset = 0;
+
+static void Blitr()
+{
+	unsigned short * p = &VideoBuffer[p_offset];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += BW;
+	p += (r_offset / 2);
+	for (int i=0; i<BW; i++) {
+		--q;
+		q1 = q;
+		for (int j=0; j<BH; j++) {
+			*p++ = *q1;
+			q1 += BW;
+		}
+		p += r_offset;
+	}
+}
+
+static void Blitrf()
+{
+	unsigned short * p = &VideoBuffer[p_offset];
+	unsigned short * q = BurnVideoBuffer;
+	unsigned short * q1 = NULL;
+
+	q += (BH - 1) * BW - 1;
+	p += (r_offset / 2);
+	for (int i=0; i<BW; i++) {
+		++q;
+		q1 = q;
+		for (int j=0; j<BH; j++) {
+			*p++ = *q1;
+			q1 -= BW;
+		}
+		p += r_offset;
+	}
+}
+
 typedef struct
 {
 	int dst_w;
@@ -552,30 +1771,43 @@ typedef struct
 	int src_h;
 	void (*blit)();
 	void (*blitf)();
+	void (*blitr)();
+	void (*blitrf)();
 } BLIT_TABLE;
 
 BLIT_TABLE blit_table[] = {
-	{320, 240, 864, 224, Blit_864x224_to_320x240, Blit_864x224_to_320x240}, // Taito (darius)
-	{320, 240, 640, 240, Blit_640x240_to_320x240, Blit_640x240_to_320x240}, // Taito (warriorb)
-	{320, 240, 640, 224, Blit_640x224_to_320x240, Blit_640x224_to_320x240}, // Taito (darius2d)
-	{320, 240, 512, 256, Blit_512x256_to_320x240, Blitf_512x256_to_320x240}, // Konami (hexion)
-	{320, 240, 512, 224, Blit_512x224_to_320x240, Blitf_512x224_to_320x240}, // hotpinbl
-	{320, 240, 448, 224, Blit_448x224_to_320x240, Blit_448x224_to_320x240}, // IGS (PGM)
-	{320, 240, 384, 256, Blit_384x256_to_320x240, Blit_384x256_to_320x240}, // Irem
-	{320, 240, 384, 240, Blit_384x240_to_320x240, Blitf_384x240_to_320x240}, // Cave
-	{320, 240, 384, 224, Blit_384x224_to_320x240, Blitf_384x224_to_320x240}, // CPS1 & CPS2
-	{320, 240, 380, 224, Blit_380x224_to_320x240, Blit_380x224_to_320x240}, // silkroad
-	{320, 240, 376, 240, Blit_376x240_to_320x240, Blit_376x240_to_320x240}, // myangel2
-	{320, 240, 368, 224, Blit_368x224_to_320x240, Blit_368x224_to_320x240}, // zerozone
-	{320, 240, 352, 240, Blit_352x240_to_320x240, Blit_352x240_to_320x240}, // V-System
-	{320, 240, 336, 240, Blit_336x240_to_320x240, Blit_336x240_to_320x240}, // Atari
-	{320, 240, 320, 240, Blit_320x240_to_320x240, Blit_320x240_to_320x240}, // Cave & Toaplan
-	{320, 240, 256, 256, Blit_256x256_to_320x240, Blitf_256x256_to_320x240},
-	{320, 240, 224, 256, Blit_224x256_to_320x240, Blit_224x256_to_320x240},
-	{400, 240, 256, 256, Blit_256x256_to_400x240, Blit_256x256_to_400x240},
-	{400, 240, 224, 256, Blit_224x256_to_400x240, Blit_224x256_to_400x240},
-	{400, 240, 448, 224, Blit_448x224_to_400x240, Blit_448x224_to_400x240}, // IGS (PGM)
-	{  0,   0,   0,   0, NULL, NULL}
+	{320, 240, 864, 224, Blit_864x224_to_320x240, Blit_864x224_to_320x240,  Blit_864x224_to_320x240,  Blit_864x224_to_320x240  }, // Taito (darius)
+	{320, 240, 640, 240, Blit_640x240_to_320x240, Blit_640x240_to_320x240,  Blit_640x240_to_320x240,  Blit_640x240_to_320x240  }, // Taito (warriorb)
+	{320, 240, 640, 224, Blit_640x224_to_320x240, Blit_640x224_to_320x240,  Blit_640x224_to_320x240,  Blit_640x224_to_320x240  }, // Taito (darius2d)
+	{320, 240, 512, 256, Blit_512x256_to_320x240, Blitf_512x256_to_320x240, Blitr_512x256_to_320x240, Blitrf_512x256_to_320x240}, // Konami (hexion)
+	{320, 240, 512, 224, Blit_512x224_to_320x240, Blitf_512x224_to_320x240, Blitr_512x224_to_320x240, Blitrf_512x224_to_320x240}, // hotpinbl
+	{320, 240, 448, 224, Blit_448x224_to_320x240, Blit_448x224_to_320x240,  Blitr_448x224_to_320x240, Blitr_448x224_to_320x240 }, // IGS (PGM)
+	{320, 240, 384, 256, Blit_384x256_to_320x240, Blit_384x256_to_320x240,  Blitr_384x256_to_320x240, Blitr_384x256_to_320x240 }, // Irem
+	{320, 240, 384, 240, Blit_384x240_to_320x240, Blitf_384x240_to_320x240, Blitr_384x240_to_320x240, Blitrf_384x240_to_320x240}, // Cave, Capcom
+	{320, 240, 384, 224, Blit_384x224_to_320x240, Blitf_384x224_to_320x240, Blitr_384x224_to_320x240, Blitrf_384x224_to_320x240}, // CPS1 & CPS2, Seta
+	{320, 240, 380, 224, Blit_380x224_to_320x240, Blit_380x224_to_320x240,  Blit_380x224_to_320x240,  Blit_380x224_to_320x240  }, // silkroad
+	{320, 240, 376, 240, Blit_376x240_to_320x240, Blit_376x240_to_320x240,  Blit_376x240_to_320x240,  Blit_376x240_to_320x240  }, // myangel2
+	{320, 240, 368, 224, Blit_368x224_to_320x240, Blit_368x224_to_320x240,  Blit_368x224_to_320x240,  Blit_368x224_to_320x240  }, // zerozone
+	{320, 240, 352, 240, Blit_352x240_to_320x240, Blit_352x240_to_320x240,  Blitr_352x240_to_320x240, Blitr_352x240_to_320x240 }, // V-System (srumbler)
+	{320, 240, 336, 240, Blit_336x240_to_320x240, Blit_336x240_to_320x240,  Blit_336x240_to_320x240,  Blit_336x240_to_320x240  }, // Atari
+	{320, 240, 320, 240, Blit_320x240_to_320x240, Blit_320x240_to_320x240,  Blitr_320x240_to_320x240, Blitrf_320x240_to_320x240}, // Cave & Toaplan
+	{320, 240, 320, 224, Blit,                    Blitf,                    Blitr_320x224_to_320x240, Blitrf_320x224_to_320x240}, // Psykio, Sega
+	{320, 240, 304, 224, Blit,                    Blitf,                    Blitr_304x224_to_320x240, Blitrf_304x224_to_320x240}, // Konami (devstors)
+	{320, 240, 288, 224, Blit,                    Blitf,                    Blitr_288x224_to_320x240, Blitrf_288x224_to_320x240}, // Pacman, Konami
+	{320, 240, 280, 240, Blit,                    Blitf,                    Blitr_280x240_to_320x240, Blitr_280x240_to_320x240 }, // Toaplan
+	{320, 240, 280, 224, Blit,                    Blitf,                    Blitr_280x224_to_320x240, Blitrf_280x224_to_320x240}, // Konami (blswhstl)
+	{320, 240, 272, 236, Blit,                    Blitf,                    Blitr_272x236_to_320x240, Blitr_272x236_to_320x240 }, // (igmo)
+	{320, 240, 256, 256, Blit_256x256_to_320x240, Blitf_256x256_to_320x240, Blitr_256x256_to_320x240, Blitrf_256x256_to_320x240}, // (ttmahjng)
+	{320, 240, 256, 248, Blit,                    Blitf,                    Blitr_256x248_to_320x240, Blitr_256x248_to_320x240 }, // (mrflea)
+	{320, 240, 256, 240, Blit,                    Blitf,                    Blitr_256x240_to_320x240, Blitrf_256x240_to_320x240}, // Sega, Capcom
+	{320, 240, 256, 234, Blit,                    Blitf,                    Blitr_256x234_to_320x240, Blitr_256x234_to_320x240 }, // (arabian)
+	{320, 240, 256, 224, Blit,                    Blitf,                    Blitr_256x224_to_320x240, Blitrf_256x224_to_320x240}, // Capcom, Sega
+	{320, 240, 248, 240, Blit,                    Blitf,                    Blitr_248x240_to_320x240, Blitr_248x240_to_320x240 }, // Technos
+	{320, 240, 224, 256, Blit_224x256_to_320x240, Blit_224x256_to_320x240,  Blit_224x256_to_320x240,  Blit_224x256_to_320x240  },
+	{400, 240, 256, 256, Blit_256x256_to_400x240, Blit_256x256_to_400x240,  Blit_256x256_to_400x240,  Blit_256x256_to_400x240  },
+	{400, 240, 224, 256, Blit_224x256_to_400x240, Blit_224x256_to_400x240,  Blit_224x256_to_400x240,  Blit_224x256_to_400x240  },
+	{400, 240, 448, 224, Blit_448x224_to_400x240, Blit_448x224_to_400x240,  Blit_448x224_to_400x240,  Blit_448x224_to_400x240  }, // IGS (PGM)
+	{  0,   0,   0,   0, NULL,                    NULL,                     NULL,                     NULL}
 };
 
 void VideoTrans()
@@ -606,6 +1838,7 @@ int VideoInit()
 // #ifdef DEVICE_GCW0
 	int hwscale = 1; //options.hwscaling;
 	bool bRotated = options.rotate;
+
 	BurnDrvGetFullSize(&VideoBufferWidth, &VideoBufferHeight);
 	printf("w=%d h=%d\n",VideoBufferWidth, VideoBufferHeight);
 
@@ -712,35 +1945,35 @@ int VideoInit()
 	// }
 
 
-	// bool bVertical = options.rotate && (BurnDrvGetFlags() & BDF_ORIENTATION_VERTICAL);
-	bool bVertical = (BurnDrvGetFlags() & BDF_ORIENTATION_VERTICAL);
+	bool bVertical = bRotated && (BurnDrvGetFlags() & BDF_ORIENTATION_VERTICAL);
+	// bool bVertical = (BurnDrvGetFlags() & BDF_ORIENTATION_VERTICAL);
 
 // #ifdef DEVICE_GCW0
 	if (hwscale > 0) {
-		// if (bVertical) {
-			// if (BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED) {
-				// BurnerVideoTrans = Blitrf;
-			// } else {
-				// BurnerVideoTrans = Blitr;
-			// }
-			// p_offset = 0;
-			// r_offset = 0;
-		// } else 
+		if (bVertical) {
+			if (BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED) {
+				BurnerVideoTrans = Blitrf;
+			} else {
+				BurnerVideoTrans = Blitr;
+			}
+			p_offset = 0;
+			r_offset = 0;
+		} else 
 		{
-			// if (BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED) {
-				// BurnerVideoTrans = Blitf;
-			// } else {
+			if (BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED) {
+				BurnerVideoTrans = Blitf;
+			} else {
 				BurnerVideoTrans = Blit;
-			// }
+			}
 			p_offset = 0;
 			q_offset = VideoBufferWidth * VideoBufferHeight - 1;
 		}
 	} else {
 // #endif
-		// BurnerVideoTrans = Blit_320x240_to_320x240; // default blit
-		BurnerVideoTrans = Blit; // default blit
+		BurnerVideoTrans = Blit_320x240_to_320x240; // default blit
+		// BurnerVideoTrans = Blit; // default blit
 
-// 		//bool bVertical = options.rotate && (BurnDrvGetFlags() & BDF_ORIENTATION_VERTICAL);
+// 		//bool bVertical = bRotated && (BurnDrvGetFlags() & BDF_ORIENTATION_VERTICAL);
 
 // 		// if source buffer < screen buffer then set general blitting routine with centering if needed
 // 		if(!bVertical && VideoBufferWidth <= screen->w && VideoBufferHeight <= screen->h) {
@@ -784,7 +2017,7 @@ int VideoInit()
 // 			}
 // 		}
 // // #ifdef DEVICE_GCW0
-// 	}
+	}
 // // #endif
 
 	return 0;
