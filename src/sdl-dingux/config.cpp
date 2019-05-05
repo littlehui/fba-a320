@@ -153,7 +153,7 @@ void ConfigGameDefault()
 	options.samplerate = 2;		// 0 - 11025, 1 - 16000, 2 - 22050, 3 - 32000
 	options.vsync = 0;
 	options.rescale = 0;		// no scaling by default
-	options.rotate = 0;
+	options.rotate = 1;
 	options.showfps = 0;
 	options.frameskip = -1;		// auto frameskip by default
 	options.create_lists = 0;
