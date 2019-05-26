@@ -1845,8 +1845,10 @@ int VideoInit()
 	BurnDrvGetFullSize(&VideoBufferWidth, &VideoBufferHeight);
 	printf("w=%d h=%d\n",VideoBufferWidth, VideoBufferHeight);
 
+	bool bVertical = bRotated && (BurnDrvGetFlags() & BDF_ORIENTATION_VERTICAL);
+
 	if (hwscale) {
-		if (bRotated) {
+		if (bVertical /* bRotated */) {
 			screen = SDL_SetVideoMode(VideoBufferHeight, VideoBufferWidth, 16, flags);
 		} else {
 			screen = SDL_SetVideoMode(VideoBufferWidth, VideoBufferHeight, 16, flags);
@@ -1866,9 +1868,6 @@ int VideoInit()
 	SDL_ShowCursor(SDL_DISABLE);
 	SDL_WM_SetCaption("Final Burn SDL", 0);
 
-	BurnDrvGetFullSize(&VideoBufferWidth, &VideoBufferHeight);
-	printf("w=%d h=%d\n",VideoBufferWidth, VideoBufferHeight);
-
 	nBurnBpp = 2;
 	BurnHighCol = myHighCol16;
 
@@ -1877,8 +1876,6 @@ int VideoInit()
 	PhysicalBufferWidth = screen->w;
 	BurnVideoBuffer = (unsigned short *)malloc(VideoBufferWidth * VideoBufferHeight * 2);
 	memset(BurnVideoBuffer, 0, VideoBufferWidth * VideoBufferHeight * 2);
-
-	bool bVertical = bRotated && (BurnDrvGetFlags() & BDF_ORIENTATION_VERTICAL);
 
 	if (hwscale) {
 		if (bVertical) {
