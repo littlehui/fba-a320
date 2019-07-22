@@ -49,7 +49,7 @@ endif
 #	Specify paths/files
 #
 
-objdir	= obj/mingw/
+objdir	= /tmp/fba-a320/obj/mingw/
 srcdir	= src/
 
 alldir	=	burn \
@@ -257,10 +257,9 @@ LD	= $(CXX)
 AS	= nasm
 
 HOSTCFLAGS = $(incdir)
-CFLAGS   = -O2 -fomit-frame-pointer -Wno-write-strings \
-		-DLSB_FIRST -fpermissive
-CXXFLAGS = -O2 -fomit-frame-pointer -Wno-write-strings \
-		-DLSB_FIRST -fpermissive
+# CFLAGS   = -O2 -fomit-frame-pointer -Wno-write-strings -DLSB_FIRST -fpermissive
+CFLAGS   = -O0 -ggdb -DLSB_FIRST -fpermissive
+CXXFLAGS := $(CFLAGS)
 
 ifneq ($(OS),Windows_NT)
 CFLAGS += -D__cdecl="" -D__fastcall=""
@@ -278,7 +277,7 @@ ifdef SPECIALBUILD
 	DEF += -DSPECIALBUILD=$(SPECIALBUILD)
 endif
 
-ifdef	DEBUG
+ifdef DEBUG
 	DEF += -DFBA_DEBUG -g
 	HOSTCFLAGS += -DFBA_DEBUG -g
 endif

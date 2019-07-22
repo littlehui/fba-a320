@@ -36,6 +36,9 @@
 
 /* SDL declarations */
 extern SDL_Surface *screen;
+int screen_w, screen_h;
+extern int flags;
+
 // extern SDL_Surface *RS97screen;
 SDL_Surface *menuSurface = NULL; // menu rendering
 
@@ -254,11 +257,23 @@ static void gui_reset()
 
 void gui_Init()
 {
+
+
+
+// int screen_w, screen_h;
+
+// SDL_GetWindowSize(screen, &screen_w, &screen_h);
+
+
 	menuSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 }
 
 void gui_Run()
 {
+	screen_w = screen->w;
+	screen_h = screen->h;
+	screen = SDL_SetVideoMode(320, 240, 16, flags);
+	
 	struct timeval s, e;
 	extern struct timeval start;
 
@@ -280,6 +295,7 @@ void gui_Run()
 void gui_Exit()
 {
 	if(menuSurface) SDL_FreeSurface(menuSurface);
+	screen = SDL_SetVideoMode(screen_w, screen_h, 16, flags);
 }
 
 //
