@@ -93,7 +93,7 @@ void RunEmulator(int drvnum)
 			"- Corrupt/Missing ROM(s)\n"
 			"- I/O Error\n"
 			"- Memory error\n\n");
-		goto finish;
+		// goto finish;
 	}
 
 	RunReset();

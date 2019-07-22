@@ -1824,10 +1824,11 @@ bool file_exists(char *path) {
 	return (stat(path, &s) == 0 && s.st_mode & S_IFREG); // exists and is file
 }
 
+int flags;
 int VideoInit()
 {
 	// Initialize SDL
-	int flags = (options.vsync ? (SDL_HWSURFACE | 
+	flags = (options.vsync ? (SDL_HWSURFACE | 
 	#ifdef SDL_TRIPLEBUF
 		SDL_TRIPLEBUF
 	#else

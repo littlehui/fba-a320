@@ -66,7 +66,7 @@ endif
 #	Specify paths/files
 #
 
-objdir	= obj/dingux/
+objdir	= /tmp/fba-a320/obj/dingux/
 srcdir	= src/
 
 alldir	=	burn \
