@@ -178,11 +178,24 @@ void do_keypad()
 
 	// process non-redefinable keypresses
 	if (keypc & BUTTON_QT) {
-		GameLooping = false;
 		keypc = keypad = 0;
+		GameLooping = false;
 	}
 
-	if (keypc & BUTTON_MENU) {
+	if (keypc & BUTTON_SELECT) {
+		if (keypc & BUTTON_X) {
+			keypc &= ~BUTTON_X;
+			ServiceRequest = 1;
+		} else if (keypc & BUTTON_Y) {
+			keypc &= ~BUTTON_Y;
+			ChangeFrameskip();
+		} else if (keypc & BUTTON_B) {
+			keypc &= ~BUTTON_SR;
+			P1P2Start = 1;
+		}
+	}
+
+	if ((keypc & BUTTON_MENU) || ((keypc & BUTTON_SELECT) && (keypc & BUTTON_START))) {
 		keypc = keypad = 0;
 		SndPause(1);
 		gui_Run();
@@ -190,43 +203,23 @@ void do_keypad()
 	}
 
 	if (keypc & BUTTON_PAUSE) {
+		keypc &= ~BUTTON_PAUSE;
 		bPauseOn = !bPauseOn;
 		SndPause(bPauseOn);
-		keypc &= ~BUTTON_PAUSE;
 	}
 
 	if(!bPauseOn) { // savestate fails inside pause
-		if (keypc & BUTTON_QSAVE) {
-			StatedSave(nSavestateSlot);
+		if ((keypc & BUTTON_QSAVE) || ((keypc & BUTTON_SELECT) && (keypc & BUTTON_SR))) {
 			keypc &= ~BUTTON_QSAVE;
-		}
-
-		if (keypc & BUTTON_QLOAD) {
-			StatedLoad(nSavestateSlot);
-			keypc &= ~BUTTON_QLOAD;
-			bPauseOn = 0;
-		}
-	}
-
-	if ((keypc & BUTTON_SL) && (keypc & BUTTON_SR)) {
-		if (keypc & BUTTON_Y) { 
-			ChangeFrameskip();
-			keypc &= ~BUTTON_Y;
-		} else if (keypc & BUTTON_B && !bPauseOn) {
-			StatedSave(nSavestateSlot);
-			keypc &= ~BUTTON_B;
-		} else if (keypc & BUTTON_A && !bPauseOn) {
-			StatedLoad(nSavestateSlot);
 			keypc &= ~BUTTON_A;
-			bPauseOn = 0;
-		} else if (keypc & BUTTON_START) {
-			keypc = keypad = 0;
-			SndPause(1);
-			gui_Run();
-			SndPause(0);
-		} else if (keypc & BUTTON_SELECT) ServiceRequest = 1;
+			StatedSave(nSavestateSlot);
+		}
+		else if ((keypc & BUTTON_QLOAD) || ((keypc & BUTTON_SELECT) && (keypc & BUTTON_SL))) {
+			keypc &= ~BUTTON_QLOAD;
+			keypc &= ~BUTTON_B;
+			StatedLoad(nSavestateSlot);
+		}
 	}
-	else if ((keypc & BUTTON_START) && (keypc & BUTTON_SELECT)) P1P2Start = 1;
 }
 
 void sdl_input_init()
