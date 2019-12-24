@@ -33,4 +33,6 @@ void VideoExit();
 void VideoFlip(void);
 void VideoClear();
 
+int VideoInitForce320x240();
+
 #endif // _SDL_VIDEO_H_

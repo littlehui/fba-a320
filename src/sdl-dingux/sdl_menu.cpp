@@ -276,16 +276,27 @@ void gui_Run()
 	
 	struct timeval s, e;
 	extern struct timeval start;
+	int hwscale = options.hwscaling;
 
 	gettimeofday(&s, NULL);
 
 	VideoClear();
+
+	if (hwscale > 0 && (screen->w != 320 || screen->h != 240)) {
+		VideoInitForce320x240(); // sets video mode to 320x240 so the menu screen looks right when a game uses a resolution different than 320x240
+	}
+
 	SDL_EnableKeyRepeat(/*SDL_DEFAULT_REPEAT_DELAY*/ 150, /*SDL_DEFAULT_REPEAT_INTERVAL*/30);
 	gui_MainMenu.itemCur = 0;
 	gui_MenuRun(&gui_MainMenu);
 	SDL_EnableKeyRepeat(0, 0);
 	ConfigGameSave();
 	VideoClear();
+
+	if (hwscale > 0 ) {
+		VideoInit(); // when menu is closed to return to the game, video mode is set to the appropiate resolution for the game
+		VideoClear();
+	}
 
 	gettimeofday(&e, NULL);
 	start.tv_sec += e.tv_sec - s.tv_sec;

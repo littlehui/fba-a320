@@ -37,6 +37,7 @@
 #define ROMLIST(A,B) romlist.A[romsort[cfg.list][B]]
 
 extern char **environ;
+extern int flags;
 
 SDL_Event event;
 
@@ -83,6 +84,7 @@ static char *abreviation_cf[8][7]={
 	{"Off","On","","","","",""},
 	{"Off","LIBAO","SDL","SDL old","","",""},
 	{"11025", "16000", "22050", "32000", "44100", "", ""}
+	{"Off","Aspect","Fullscr","","","",""}
 };
 
 void load_lastsel();
@@ -538,6 +540,10 @@ void put_option_line(unsigned char num, unsigned char y)
 		sprintf((char*)g_string, "Keyrepeat delay: %d" , cfg.delayspeed );
 		put_string( g_string , OPTIONS_START_X , y , BLANC , gui_screen );
 		break;
+	// case OPTION_GUI_DEF_RUN_HWSCALING:
+	// 	sprintf((char*)g_string, "Hardware scaling: %s", abreviation_cf[10][options.hwscaling]);
+	// 	put_string( g_string , OPTIONS_START_X , y , BLANC , gui_screen );
+	// 	break;
 	case OPTION_GUI_REPEATSPEED:
 		sprintf((char*)g_string, "Keyrepeat speed: %d" , cfg.repeatspeed );
 		put_string( g_string , OPTIONS_START_X , y , BLANC , gui_screen );
@@ -914,13 +920,7 @@ void ss_prog_run(void)
 					// RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
 					// gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 
-					gui_screen = SDL_SetVideoMode(320, 240, 16, SDL_HWSURFACE  | 
-#ifdef SDL_TRIPLEBUF
-	SDL_TRIPLEBUF
-#else
-	SDL_DOUBLEBUF
-#endif
-					);
+					gui_screen = SDL_SetVideoMode(320, 240, 16, flags);
 
 					// gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 					SDL_ShowCursor(0);
@@ -1173,13 +1173,7 @@ void GuiRun()
 
 	// RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
 	// gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
-	gui_screen = SDL_SetVideoMode(320, 240, 16, SDL_HWSURFACE  | 
-#ifdef SDL_TRIPLEBUF
-    SDL_TRIPLEBUF
-#else
-    SDL_DOUBLEBUF
-#endif
-	);
+	gui_screen = SDL_SetVideoMode(320, 240, 16, flags);
 
 	SDL_ShowCursor(0);
 	SDL_JoystickOpen(0);

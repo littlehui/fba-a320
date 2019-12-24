@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <SDL/SDL.h>
+#include <sys/stat.h>
 
 #include "font.h"
 #include "snd.h"
@@ -67,6 +68,13 @@ unsigned int GetTicks (void)
 	return ticks;
 }
 
+bool file_exists(char *path) {
+	struct stat s;
+	return (stat(path, &s) == 0 && s.st_mode & S_IFREG); // exists and is file
+}
+
+int hwscale;
+
 void RunEmulator(int drvnum)
 {
 	extern int nZetCpuCore; // 0 - CZ80, 1 - MAME_Z80
@@ -78,9 +86,17 @@ void RunEmulator(int drvnum)
 		nAnalogSpeed = 0x100 / 100 * options.sense;
 	}
 
+	// int hwscale = options.hwscaling;
+	// int
+	hwscale = file_exists("/sys/devices/platform/jz-lcd.0/keep_aspect_ratio") || file_exists("/proc/jz/ipu"); //options.hwscaling;
+
 	gui_Init();
 
-	VideoInit();
+	if (hwscale > 0) {
+		VideoInitForce320x240(); // sets video mode to 320x240 so the loading screen looks right when a game uses a resolution different than 320x240
+	} else {
+		VideoInit();
+	}
 
 	printf("Attempt to initialise '%s'\n", BurnDrvGetTextA(DRV_FULLNAME));
 
@@ -94,6 +110,10 @@ void RunEmulator(int drvnum)
 			"- I/O Error\n"
 			"- Memory error\n\n");
 		// goto finish;
+	}
+
+	if (hwscale > 0) {
+		VideoInit(); // after loading screen ends, video mode is set to the appropiate resolution for the game
 	}
 
 	RunReset();
