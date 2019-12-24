@@ -91,6 +91,7 @@ void RunEmulator(int drvnum)
 	hwscale = file_exists("/sys/devices/platform/jz-lcd.0/keep_aspect_ratio") || file_exists("/proc/jz/ipu"); //options.hwscaling;
 
 	gui_Init();
+	ConfigGameLoad();
 
 	if (hwscale > 0) {
 		VideoInitForce320x240(); // sets video mode to 320x240 so the loading screen looks right when a game uses a resolution different than 320x240

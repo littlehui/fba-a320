@@ -75,7 +75,7 @@ int DrvInit(int nDrvNum, bool bRestore)
 	nMaxPlayers = BurnDrvGetMaxPlayers();
 //	GameInpInit();					// Init game input
 
-	ConfigGameLoad();
+	// ConfigGameLoad();
 //	InputMake(true);
 
 //	GameInpDefault();

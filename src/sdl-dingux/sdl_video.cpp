@@ -1842,9 +1842,11 @@ int VideoInit()
 	printf("w=%d h=%d\n",VideoBufferWidth, VideoBufferHeight);
 
 	bool bVertical = bRotated && (BurnDrvGetFlags() & BDF_ORIENTATION_VERTICAL);
+	bool bFlipped = BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED;
+	if (options.flip) bFlipped = !bFlipped;
 
 	if (hwscale) {
-		if (bVertical /* bRotated */) {
+		if (bVertical && bRotated) {
 			screen = SDL_SetVideoMode(VideoBufferHeight, VideoBufferWidth, 16, flags);
 		} else {
 			screen = SDL_SetVideoMode(VideoBufferWidth, VideoBufferHeight, 16, flags);
@@ -1874,8 +1876,8 @@ int VideoInit()
 	memset(BurnVideoBuffer, 0, VideoBufferWidth * VideoBufferHeight * 2);
 
 	if (hwscale) {
-		if (bVertical) {
-			if (BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED) {
+		if (bVertical && bRotated) {
+			if (bFlipped) {
 				BurnerVideoTrans = Blitrf;
 			} else {
 				BurnerVideoTrans = Blitr;
@@ -1883,7 +1885,7 @@ int VideoInit()
 			p_offset = 0;
 			r_offset = 0;
 		} else {
-			if (BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED) {
+			if (bFlipped) {
 				BurnerVideoTrans = Blitf;
 			} else {
 				BurnerVideoTrans = Blit;
@@ -1893,24 +1895,24 @@ int VideoInit()
 		}
 	} else {
 		BurnerVideoTrans = Blit_320x240_to_320x240; // default blit
-		if(!bVertical && VideoBufferWidth <= screen->w && VideoBufferHeight <= screen->h) {
-			if(BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED)
+		if (!bVertical && VideoBufferWidth <= screen->w && VideoBufferHeight <= screen->h) {
+			if (bFlipped)
 				BurnerVideoTrans = Blitf;
 			else
 				BurnerVideoTrans = Blit;
-		} else if(bVertical && VideoBufferWidth <= screen->h && VideoBufferHeight <= screen->w) {
-			if(BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED)
+		} else if (bVertical && VideoBufferWidth <= screen->h && VideoBufferHeight <= screen->w) {
+			if (bFlipped)
 				BurnerVideoTrans = Blitrf;
 			else
 				BurnerVideoTrans = Blitr;
 		} else {
 			// if source buffer is bigger than screen buffer then find an appropriate downscaler
 			for(int i = 0; blit_table[i].dst_w != 0; i++) {
-				if(blit_table[i].dst_w == screen->w && blit_table[i].dst_h == screen->h &&
+				if (blit_table[i].dst_w == screen->w && blit_table[i].dst_h == screen->h &&
 				   blit_table[i].src_w == VideoBufferWidth && blit_table[i].src_h == VideoBufferHeight) {
-					if (bVertical && (BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED))
+					if (bVertical && (bFlipped))
 						BurnerVideoTrans = blit_table[i].blitrf;
-					else if (BurnDrvGetFlags() & BDF_ORIENTATION_FLIPPED)
+					else if (bFlipped)
 						BurnerVideoTrans = blit_table[i].blitf;
 					else if (bVertical)
 						BurnerVideoTrans = blit_table[i].blitr;
@@ -1929,6 +1931,17 @@ int VideoInit()
 				p_offset = (screen->w - VideoBufferWidth)/2 + (screen->h - VideoBufferHeight)/2*screen->w;
 				q_offset = VideoBufferWidth*VideoBufferHeight-1;
 			}
+		}
+	}
+
+	if (BurnerVideoTrans == Blit || BurnerVideoTrans == Blitf || BurnerVideoTrans == Blitr || BurnerVideoTrans == Blitrf) {
+		if (bVertical) {
+			p_offset = ((screen->h - VideoBufferWidth)/2)*screen->w;
+			r_offset = screen->w - VideoBufferHeight;
+		}
+		else {
+			p_offset = (screen->w - VideoBufferWidth)/2 + (screen->h - VideoBufferHeight)/2*screen->w;
+			q_offset = VideoBufferWidth*VideoBufferHeight-1;
 		}
 	}
 

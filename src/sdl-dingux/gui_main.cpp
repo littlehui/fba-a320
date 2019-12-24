@@ -75,7 +75,7 @@ SELECTOR sel;
 
 unsigned char joy_speed[4]={0,1,3,7};
 
-static char *abreviation_cf[8][7]={
+static char *abreviation_cf[11][7]={
 	{"Disable","Enable","","","","",""},
 	{"Original","Fullscreen","","","","",""},
 	{"Off","Auto","Manual","","","",""},
@@ -83,7 +83,9 @@ static char *abreviation_cf[8][7]={
 	{"CZ80","MAME Z80","","","","",""},
 	{"Off","On","","","","",""},
 	{"Off","LIBAO","SDL","SDL old","","",""},
-	{"11025", "16000", "22050", "32000", "44100", "", ""}
+	{"11025", "16000", "22050", "32000", "44100", "", ""},
+	{"No","Yes","","","","",""},
+	{"No","Yes","","","","",""},
 	{"Off","Aspect","Fullscr","","","",""}
 };
 
@@ -725,6 +727,9 @@ static int run_options[] = {
 	OPTION_FBA_RUN,
 	OPTION_FBA_SOUND,
 	OPTION_FBA_SAMPLERATE,
+	OPTION_FBA_ROTATE,
+	OPTION_FBA_FLIP,
+	// OPTION_FBA_VSYNC,
 	OPTION_FBA_SHOWFPS,
 	OPTION_FBA_68K,
 #ifdef OPTIONS_FOR_A320
@@ -754,6 +759,13 @@ void put_run_option_line(unsigned char num, unsigned char y)
 		sprintf((char*)g_string, "%sHz" , abreviation_cf[7][options.samplerate]);
 		put_string(g_string, CONF_START_X, y, VERT, gui_screen);
 		break;
+	case OPTION_FBA_ROTATE:
+		put_string("Rotate screen", OPTIONS_START_X, y, BLANC, gui_screen);
+		put_string(abreviation_cf[9][options.rotate], CONF_START_X, y, VERT, gui_screen);
+		break;
+	case OPTION_FBA_FLIP:
+		put_string("Flip screen", OPTIONS_START_X, y, BLANC, gui_screen);
+		put_string(abreviation_cf[9][options.flip], CONF_START_X, y, VERT, gui_screen);
 		break;
 	// case OPTION_FBA_VSYNC:
 	// 	put_string("Vertical sync", OPTIONS_START_X, y, BLANC, gui_screen);
@@ -813,9 +825,9 @@ void ss_prog_run(void)
 
 		int option_start = START_Y;
 
-		for (int i = 0; i <= opt_last; i++) {
-			if(i + run_off <= opt_last)
-				put_run_option_line(run_options[i + run_off], option_start);
+		for (int i = run_off; i <= opt_last; i++) {
+			if(i <= opt_last)
+				put_run_option_line(run_options[i], option_start);
 			option_start += 9;
 		}
 
@@ -854,6 +866,11 @@ void ss_prog_run(void)
 							options.samplerate--;
 							if(options.samplerate < 0) options.samplerate = 4;
 							break;
+						case OPTION_FBA_ROTATE:
+							options.rotate ^= 1;
+							break;
+						case OPTION_FBA_FLIP:
+							options.flip ^= 1;
 							break;
 						// case OPTION_FBA_VSYNC:
 						// 	options.vsync ^= 1;
@@ -883,6 +900,8 @@ void ss_prog_run(void)
 							options.samplerate++;
 							if(options.samplerate >= 5) options.samplerate = 0;
 							break;
+						case OPTION_FBA_FLIP:
+							options.flip ^= 1;
 							break;
 						// case OPTION_FBA_VSYNC:
 						// 	options.vsync ^= 1;
