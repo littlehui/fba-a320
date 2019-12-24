@@ -213,7 +213,7 @@ inline static unsigned char ReadByte(unsigned int a)
 //	bprintf(PRINT_NORMAL, _T("read8 0x%08X\n"), a);
 
 	pr = FIND_R(a);
-	if ((unsigned int)pr >= SEK_MAXHANDLER) {
+	if ((unsigned char)pr >= SEK_MAXHANDLER) {
 		a ^= 1;
 		return pr[a & SEK_PAGEM];
 	}
@@ -1378,7 +1378,7 @@ int SekRun(const int nCycles)
 void SekDbgDisableBreakpoints()
 {
 #if defined FBA_DEBUG && defined EMU_M68K
-	if(nSekCpuCore == SEK_CORE_M68K) 
+	if(nSekCpuCore == SEK_CORE_M68K) {
 		m68k_set_instr_hook_callback(NULL);
 
 		M68KReadByteDebug = M68KReadByte;
@@ -1404,7 +1404,7 @@ void SekDbgEnableBreakpoints()
 {
 	if (BreakpointDataRead[0].address || BreakpointDataWrite[0].address || BreakpointFetch[0].address) {
 #if defined FBA_DEBUG && defined EMU_M68K
-		if(nSekCpuCore == SEK_CORE_M68K) 
+		if(nSekCpuCore == SEK_CORE_M68K) {
 			SekDbgDisableBreakpoints();
 
 			if (BreakpointFetch[0].address) {
