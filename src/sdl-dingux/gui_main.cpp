@@ -719,7 +719,6 @@ static int run_options[] = {
 	OPTION_FBA_RUN,
 	OPTION_FBA_SOUND,
 	OPTION_FBA_SAMPLERATE,
-	OPTION_FBA_VSYNC,
 	OPTION_FBA_SHOWFPS,
 	OPTION_FBA_68K,
 #ifdef OPTIONS_FOR_A320
@@ -749,10 +748,11 @@ void put_run_option_line(unsigned char num, unsigned char y)
 		sprintf((char*)g_string, "%sHz" , abreviation_cf[7][options.samplerate]);
 		put_string(g_string, CONF_START_X, y, VERT, gui_screen);
 		break;
-	case OPTION_FBA_VSYNC:
-		put_string("Vertical sync", OPTIONS_START_X, y, BLANC, gui_screen);
-		put_string(abreviation_cf[5][options.vsync], CONF_START_X, y, VERT, gui_screen);
 		break;
+	// case OPTION_FBA_VSYNC:
+	// 	put_string("Vertical sync", OPTIONS_START_X, y, BLANC, gui_screen);
+	// 	put_string(abreviation_cf[5][options.vsync], CONF_START_X, y, VERT, gui_screen);
+	// 	break;
 	case OPTION_FBA_SHOWFPS:
 		put_string("Show FPS", OPTIONS_START_X, y, BLANC, gui_screen);
 		put_string(abreviation_cf[0][options.showfps], CONF_START_X, y, VERT, gui_screen);
@@ -848,9 +848,10 @@ void ss_prog_run(void)
 							options.samplerate--;
 							if(options.samplerate < 0) options.samplerate = 4;
 							break;
-						case OPTION_FBA_VSYNC:
-							options.vsync ^= 1;
 							break;
+						// case OPTION_FBA_VSYNC:
+						// 	options.vsync ^= 1;
+						// 	break;
 						case OPTION_FBA_SHOWFPS:
 							options.showfps ^= 1;
 							break;
@@ -876,9 +877,10 @@ void ss_prog_run(void)
 							options.samplerate++;
 							if(options.samplerate >= 5) options.samplerate = 0;
 							break;
-						case OPTION_FBA_VSYNC:
-							options.vsync ^= 1;
 							break;
+						// case OPTION_FBA_VSYNC:
+						// 	options.vsync ^= 1;
+						// 	break;
 						case OPTION_FBA_SHOWFPS:
 							options.showfps ^= 1;
 							break;

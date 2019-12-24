@@ -1828,13 +1828,13 @@ int flags;
 int VideoInit()
 {
 	// Initialize SDL
-	flags = (options.vsync ? (SDL_HWSURFACE | 
+	flags = SDL_HWSURFACE |
 	#ifdef SDL_TRIPLEBUF
 		SDL_TRIPLEBUF
 	#else
 		SDL_DOUBLEBUF
 	#endif
-	) : SDL_SWSURFACE);
+	;
 
 	if(!(SDL_WasInit(SDL_INIT_VIDEO) & SDL_INIT_VIDEO)) {
 		SDL_InitSubSystem(SDL_INIT_VIDEO);
