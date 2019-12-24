@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=CPS2
+Comment=FBA A320 Emulator
+Exec=fba-a320.dge
+Icon=fba-a320
+Categories=emulators.systems;
+X-OD-Selector=/home/retrofw/roms/cps2
+X-OD-Filter=.zip
+X-OD-Alias=aliases.txt
+Terminal=false
+Type=Application
+StartupNotify=true
