@@ -1,6 +1,5 @@
-
-Final Burn Alpha SDL for OpenDingux
------------------------------------
+Final Burn Alpha SDL for the RetroFW v2.0
+----
 
 FB Alpha is an arcade emulator supporting the following hardware platforms;
 
@@ -14,15 +13,39 @@ FB Alpha is an arcade emulator supporting the following hardware platforms;
  - Psikyo 68EC020 based hardware
  - misc stuff we like
 
+Controls
+----
+
+D-PAD           D-PAD
+SELECT          Coin1
+START           Start1
+A               Fire1
+B               Fire2
+X               Fire3
+Y               Fire4
+L               Fire5
+R               Fire6
+
+Hotkeys
+----
+Select + Start  Emulator menu
+Select + X      Service menu
+Select + Y      Show/hide FPS
+Select + B      Player 2 start
+Select + L      Quick load state
+Select + R      Quick save state
+
+All fire keys could be redefined in the menu.
+
 
 Supported games
----------------
+----
 
 Refer to gamelist.txt for the list of supported roms
 
 
 Version
--------
+----
 
 FBA SDL is based on FBA 0.2.96.86 and is intended for both Dingux/OpenDingux.
 It can be run on Dingoo a320, Dingoo a380 and Ritmix rzx50. Screen size is
@@ -32,7 +55,7 @@ Romset is synchronized with MAME 0.126
 
 
 How to use FB Alpha
--------------------
+----
 
 FBA SDL is now merged with the frontend based on Capex in one application. Just
 run it, press START and choose Rom Show mode: all, available or non-available.
@@ -47,7 +70,7 @@ Full path and extension are obligatory.
 
 
 Commandline interface
----------------------
+----
 
 FBA SDL can also be invoked with command line options.
 The options are as follows;
@@ -72,32 +95,8 @@ Example:
 ./fbasdl.dge ./roms/dino.zip --sound-sdl --samplerate=44100 --68kcore=0 --z80core=0
 
 
-Controls and hotkeys
---------------------
-
-Standard keymapping:
-D-PAD        - D-PAD
-SELECT       - Coin1
-START        - Start1
-SELECT+START - Start2
-A            - Fire1
-B            - Fire2
-X            - Fire3
-Y            - Fire4
-L            - Fire5
-R            - Fire6
-
-L+R+Y        - Show/hide fps
-L+R+A        - Quick state load
-L+R+B        - Quick state save
-L+R+SELECT   - Service menu
-L+R+START    - FBA menu (key config and load/save states)
-
-All fire keys could be redefined in the menu.
-
-
 Usage/optimisation tips
------------------------
+----
 
 If you are running on OpenDingux on Dingoo a320 you should do the following:
 
@@ -128,15 +127,16 @@ you can use the following bash script to enable swap
 
 
 Thanks go to
-------------
+----
 
 Slaanesh for not releasing FBA320 sources which gave me enough motivation to
 replicate his work. :)
 
 
 Source code
------------
+----
 
+https://github.com/pinglfood/fba-a320
 https://github.com/dmitrysmagin/fba-a320
 https://github.com/dmitrysmagin/fba-sdl
 
@@ -147,7 +147,7 @@ FB Alpha is written by FB Alpha Team
 http://fbalpha.com/
 
 Acknowledgements
-----------------
+----
 
 Thanks to: Dave, ElSemi, Gangta, OG, Razoola, Logiqx, TRAC, CrashTest,
            Andrea Mazzoleni, Derek Liauw Kie Fa, Dirk Stevens, Maxim Stepin,

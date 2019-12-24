@@ -627,6 +627,7 @@ opk: all
 	fba-a320/skin \
 	fba-a320/fba-a320.dge \
 	fba-a320/fba-a320.png \
+	fba-a320/fba-a320.man.txt \
 	fba-a320/aliases.txt \
 	fba-a320/fba-a320.opk \
 	-all-root -noappend -no-exports -no-xattrs
