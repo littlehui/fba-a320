@@ -113,6 +113,7 @@ typedef struct
 	int vsync;
 	int rescale;
 	int rotate;
+	int hwscaling;
 	int showfps;
 	int frameskip;
 	int m68kcore;

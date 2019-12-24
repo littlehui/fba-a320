@@ -19,7 +19,6 @@
 
 #include <stdio.h>
 #include <SDL/SDL.h>
-#include <sys/stat.h>
 
 #include "burner.h"
 #include "sdl_run.h"
@@ -1819,12 +1818,9 @@ void VideoTrans()
 	if(SDL_MUSTLOCK(screen)) SDL_UnlockSurface(screen);
 }
 
-bool file_exists(char *path) {
-	struct stat s;
-	return (stat(path, &s) == 0 && s.st_mode & S_IFREG); // exists and is file
-}
 
 int flags;
+extern int hwscale;
 int VideoInit()
 {
 	// Initialize SDL
@@ -1840,7 +1836,6 @@ int VideoInit()
 		SDL_InitSubSystem(SDL_INIT_VIDEO);
 	}
 
-	int hwscale = file_exists("/sys/devices/platform/jz-lcd.0/keep_aspect_ratio") || file_exists("/proc/jz/ipu_ratio"); //options.hwscaling;
 	bool bRotated = options.rotate;
 
 	BurnDrvGetFullSize(&VideoBufferWidth, &VideoBufferHeight);
@@ -1964,4 +1959,23 @@ void VideoFlip()
 	// uint32_t *d = (uint32_t*)RS97screen->pixels;
 	// for(uint8_t y = 0; y < 239; y++, s += 160, d += 320) memmove(d, s, 1280); // double-line fix by pingflood, 2018
 	SDL_Flip(screen);
+}
+
+int VideoInitForce320x240()
+{
+	// Initialize SDL
+	if(!(SDL_WasInit(SDL_INIT_VIDEO) & SDL_INIT_VIDEO)) {
+		SDL_InitSubSystem(SDL_INIT_VIDEO);
+	}
+
+	screen = SDL_SetVideoMode(320, 240, 16, flags);
+	SDL_ShowCursor(SDL_DISABLE);
+
+	if(!screen) {
+		printf("SDL_SetVideoMode screen not initialised.\n");
+	} else {
+		printf("SDL_SetVideoMode successful.\n");
+	}
+
+	return 0;
 }
