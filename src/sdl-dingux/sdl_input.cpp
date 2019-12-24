@@ -153,12 +153,20 @@ void do_keypad()
 	sdl_input_read();
 
 	// process redefinable keypresses
-	if (keypad & KEYPAD_UP) FBA_KEYPAD[0] |= bVert ? KEYPAD_LEFT : KEYPAD_UP;
-	if (keypad & KEYPAD_DOWN) FBA_KEYPAD[0] |= bVert ? KEYPAD_RIGHT : KEYPAD_DOWN;
-	if (keypad & KEYPAD_LEFT) FBA_KEYPAD[0] |= bVert ? KEYPAD_DOWN : KEYPAD_LEFT;
-	if (keypad & KEYPAD_RIGHT) FBA_KEYPAD[0] |= bVert ? KEYPAD_UP : KEYPAD_RIGHT;
 
-	if (keypad & KEYPAD_COIN) FBA_KEYPAD[0] |= KEYPAD_COIN;
+	if (options.flip) {
+		if (keypad & KEYPAD_UP)    FBA_KEYPAD[0] |= bVert ? KEYPAD_RIGHT : KEYPAD_DOWN;
+		if (keypad & KEYPAD_DOWN)  FBA_KEYPAD[0] |= bVert ? KEYPAD_LEFT  : KEYPAD_UP;
+		if (keypad & KEYPAD_LEFT)  FBA_KEYPAD[0] |= bVert ? KEYPAD_UP    : KEYPAD_RIGHT;
+		if (keypad & KEYPAD_RIGHT) FBA_KEYPAD[0] |= bVert ? KEYPAD_DOWN  : KEYPAD_LEFT;
+	} else {
+		if (keypad & KEYPAD_UP)    FBA_KEYPAD[0] |= bVert ? KEYPAD_LEFT  : KEYPAD_UP;
+		if (keypad & KEYPAD_DOWN)  FBA_KEYPAD[0] |= bVert ? KEYPAD_RIGHT : KEYPAD_DOWN;
+		if (keypad & KEYPAD_LEFT)  FBA_KEYPAD[0] |= bVert ? KEYPAD_DOWN  : KEYPAD_LEFT;
+		if (keypad & KEYPAD_RIGHT) FBA_KEYPAD[0] |= bVert ? KEYPAD_UP    : KEYPAD_RIGHT;
+	}
+
+	if (keypad & KEYPAD_COIN)  FBA_KEYPAD[0] |= KEYPAD_COIN;
 	if (keypad & KEYPAD_START) FBA_KEYPAD[0] |= KEYPAD_START;
 
 	if (keypad & KEYPAD_FIRE1) FBA_KEYPAD[0] |= KEYPAD_FIRE1;		// A

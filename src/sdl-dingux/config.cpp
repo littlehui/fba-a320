@@ -153,7 +153,8 @@ void ConfigGameDefault()
 	options.samplerate = 2;		// 0 - 11025, 1 - 16000, 2 - 22050, 3 - 32000
 	options.vsync = 1;
 	options.rescale = 0;		// no scaling by default
-	options.rotate = 1;
+	options.rotate = 0;
+	options.flip = 0;
 	options.hwscaling = 1;		// HW scaling by default
 	options.showfps = 0;
 	options.frameskip = -1;		// auto frameskip by default
@@ -205,6 +206,7 @@ int ConfigGameLoad()
 			if(strcmp(arg1, "FBA_VSYNC") == 0) options.vsync = argd;
 			if(strcmp(arg1, "FBA_RESCALE") == 0) options.rescale = argd;
 			if(strcmp(arg1, "FBA_ROTATE") == 0) options.rotate = argd;
+			if(strcmp(arg1, "FBA_FLIP") == 0) options.flip = argd;
 			if(strcmp(arg1, "FBA_HWSCALING") == 0) options.hwscaling = argd;
 			if(strcmp(arg1, "FBA_SHOWFPS") == 0) options.showfps = argd;
 			if(strcmp(arg1, "FBA_FRAMESKIP") == 0) options.frameskip = argd;
@@ -251,6 +253,7 @@ int ConfigGameSave()
 	fprintf(fp, "FBA_VSYNC %d\n", options.vsync);
 	fprintf(fp, "FBA_RESCALE %d\n", options.rescale);
 	fprintf(fp, "FBA_ROTATE %d\n", options.rotate);
+	fprintf(fp, "FBA_FLIP %d\n", options.flip);
 	fprintf(fp, "FBA_HWSCALING %d\n", options.hwscaling);
 	fprintf(fp, "FBA_SHOWFPS %d\n", options.showfps);
 	fprintf(fp, "FBA_FRAMESKIP %d\n", options.frameskip);
