@@ -210,7 +210,7 @@ void gui_MenuRun(MENU *menu)
 		gui_Flip();
 
 		SDL_WaitEvent(&gui_event);
-		
+
 		if (gui_event.type != SDL_KEYDOWN) continue;
 
 		// DINGOO A - apply parameter or enter submenu
@@ -253,7 +253,7 @@ static void gui_reset()
 	done = 1;
 }
 
-/* exported functions */ 
+/* exported functions */
 
 void gui_Init()
 {
@@ -273,7 +273,7 @@ void gui_Run()
 	screen_w = screen->w;
 	screen_h = screen->h;
 	screen = SDL_SetVideoMode(320, 240, 16, flags);
-	
+
 	struct timeval s, e;
 	extern struct timeval start;
 	int hwscale = options.hwscaling;

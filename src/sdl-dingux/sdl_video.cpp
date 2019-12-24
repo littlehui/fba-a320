@@ -34,7 +34,6 @@ int PhysicalBufferWidth = 0;
 unsigned short *BurnVideoBuffer = NULL; // source FBA video buffer
 unsigned short *VideoBuffer = NULL; // screen buffer
 
-// SDL_Surface *RS97screen;
 SDL_Surface *screen;
 
 #define BW VideoBufferWidth
@@ -55,12 +54,12 @@ static void Blit_null() {}
 
 static void (*BurnerVideoTrans)() = Blit_null;
 
-static void Blit_864x224_to_320x240() 
+static void Blit_864x224_to_320x240()
 {
 	// Taito 864x224
 	unsigned short * p = &VideoBuffer[2560];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<224; i++)
 		for (int j=0; j<32; j++) {
 			p[0] = COLORMIX(q[0], q[1]); // 0, 1, 2
@@ -78,12 +77,12 @@ static void Blit_864x224_to_320x240()
 		}
 }
 
-static void Blit_640x240_to_320x240() 
+static void Blit_640x240_to_320x240()
 {
 	// Taito 640x240
 	unsigned short * p = &VideoBuffer[0];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<240; i++)
 		for (int j=0; j<320; j++) {
 			p[0] = COLORMIX(q[0], q[1]);
@@ -92,12 +91,12 @@ static void Blit_640x240_to_320x240()
 		}
 }
 
-static void Blit_640x224_to_320x240() 
+static void Blit_640x224_to_320x240()
 {
 	// Taito 640x224
 	unsigned short * p = &VideoBuffer[2560];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<224; i++)
 		for (int j=0; j<320; j++) {
 			p[0] = COLORMIX(q[0], q[1]);
@@ -106,12 +105,12 @@ static void Blit_640x224_to_320x240()
 		}
 }
 
-static void Blit_512x256_to_320x240() 
+static void Blit_512x256_to_320x240()
 {
 	// Konami 512x256
 	unsigned short * p = &VideoBuffer[0];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<240; i++) {
 		for (int j=0; j<64; j++) {
 			p[0] = COLORMIX(q[0], q[1]);
@@ -126,12 +125,12 @@ static void Blit_512x256_to_320x240()
 	}
 }
 
-static void Blitf_512x256_to_320x240() 
+static void Blitf_512x256_to_320x240()
 {
 	// Konami 512x256
 	unsigned short * p = &VideoBuffer[0];
 	unsigned short * q = BurnVideoBuffer + 512 * 256 - 1 - 8;
-	
+
 	for (int i=0; i<240; i++) {
 		for (int j=0; j<64; j++) {
 			p[0] = COLORMIX(q[7], q[6]);
@@ -222,12 +221,12 @@ static void Blitrf_512x256_to_320x240()
 	}
 }
 
-static void Blit_512x224_to_320x240() 
+static void Blit_512x224_to_320x240()
 {
 	// galpinbl, hotpinbl 512x224
 	unsigned short * p = &VideoBuffer[2560];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<224; i++) {
 		for (int j=0; j<64; j++) {
 			p[0] = COLORMIX(q[0], q[1]);
@@ -241,12 +240,12 @@ static void Blit_512x224_to_320x240()
 	}
 }
 
-static void Blitf_512x224_to_320x240() 
+static void Blitf_512x224_to_320x240()
 {
 	// galpinbl, hotpinbl 512x224
 	unsigned short * p = &VideoBuffer[2560];
 	unsigned short * q = BurnVideoBuffer + 512 * 224 - 1 - 8;
-	
+
 	for (int i=0; i<224; i++) {
 		for (int j=0; j<64; j++) {
 			p[0] = COLORMIX(q[7], q[6]);
@@ -338,12 +337,12 @@ static void Blitrf_512x224_to_320x240()
 	}
 }
 
-static void Blit_448x224_to_320x240() 
+static void Blit_448x224_to_320x240()
 {
 	// IGS 448x224
 	unsigned short * p = &VideoBuffer[2560];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<224; i++)
 		for (int j=0; j<64; j++) {
 			p[0] = q[0];
@@ -399,7 +398,7 @@ static void Blit_384x256_to_320x240()
 	// Irem 384x256
 	unsigned short * p = &VideoBuffer[0];
 	unsigned short * q = BurnVideoBuffer + 384*8;
-	
+
 	for (int i=0; i<240; i++)
 		for (int j=0; j<64; j++) {
 			p[0] = q[0];
@@ -450,12 +449,12 @@ static void Blitr_384x256_to_320x240()
 	}
 }
 
-static void Blit_384x240_to_320x240() 
+static void Blit_384x240_to_320x240()
 {
 	// 384x240
 	unsigned short * p = &VideoBuffer[0];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<240; i++)
 		for (int j=0; j<64; j++) {
 			p[0] = q[0];
@@ -468,12 +467,12 @@ static void Blit_384x240_to_320x240()
 		}
 }
 
-static void Blitf_384x240_to_320x240() 
+static void Blitf_384x240_to_320x240()
 {
 	// 384x240
 	unsigned short * p = &VideoBuffer[0];
 	unsigned short * q = BurnVideoBuffer + 384 * 240 - 1 - 6;
-	
+
 	for (int i=0; i<240; i++)
 		for (int j=0; j<64; j++) {
 			p[0] = q[5];
@@ -563,12 +562,12 @@ static void Blitrf_384x240_to_320x240()
 	}
 }
 
-static void Blit_384x224_to_320x240() 
+static void Blit_384x224_to_320x240()
 {
 	// CPS1 & CPS2 384x224
 	unsigned short * p = &VideoBuffer[2560];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<224; i++)
 		for (int j=0; j<64; j++) {
 			p[0] = q[0];
@@ -581,12 +580,12 @@ static void Blit_384x224_to_320x240()
 		}
 }
 
-static void Blitf_384x224_to_320x240() 
+static void Blitf_384x224_to_320x240()
 {
 	// CPS1 & CPS2 384x224
 	unsigned short * p = &VideoBuffer[2560];
 	unsigned short * q = BurnVideoBuffer + 384 * 224 - 1 - 6;
-	
+
 	for (int i=0; i<224; i++)
 		for (int j=0; j<64; j++) {
 			p[0] = q[5];
@@ -675,12 +674,12 @@ static void Blitrf_384x224_to_320x240()
 	}
 }
 
-static void Blit_380x224_to_320x240() 
+static void Blit_380x224_to_320x240()
 {
 	// silkroad 380x224
 	unsigned short * p = &VideoBuffer[2560+2];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<224; i++) {
 		for (int j=0; j<63; j++) {
 			p[0] = q[0];
@@ -698,12 +697,12 @@ static void Blit_380x224_to_320x240()
 	}
 }
 
-static void Blit_376x240_to_320x240() 
+static void Blit_376x240_to_320x240()
 {
 	// myangel2 376x240
 	unsigned short * p = &VideoBuffer[3];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<240; i++) {
 		for (int j=0; j<62; j++) {
 			p[0] = q[0];
@@ -723,12 +722,12 @@ static void Blit_376x240_to_320x240()
 	}
 }
 
-static void Blit_368x224_to_320x240() 
+static void Blit_368x224_to_320x240()
 {
 	// zerozone 368x224
 	unsigned short * p = &VideoBuffer[2560];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<224; i++)
 		for (int j=0; j<16; j++) {
 			p[0] = q[0];
@@ -756,12 +755,12 @@ static void Blit_368x224_to_320x240()
 		}
 }
 
-static void Blit_352x240_to_320x240() 
+static void Blit_352x240_to_320x240()
 {
 	// V-System 352x240
 	unsigned short * p = &VideoBuffer[0];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<240; i++)
 		for (int j=0; j<32; j++) {
 			p[0] = q[0];
@@ -815,12 +814,12 @@ static void Blitr_352x240_to_320x240()
 	}
 }
 
-static void Blit_336x240_to_320x240() 
+static void Blit_336x240_to_320x240()
 {
 	// Atari 336x240
 	unsigned short * p = &VideoBuffer[0];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<240; i++)
 		for (int j=0; j<16; j++) {
 			p[0] = q[0];
@@ -848,7 +847,7 @@ static void Blit_336x240_to_320x240()
 		}
 }
 
-static void Blit_320x240_to_320x240() 
+static void Blit_320x240_to_320x240()
 {
 	// Cave & Toaplan 320x240
 	unsigned short * p = &VideoBuffer[0];
@@ -1297,7 +1296,7 @@ static void Blitr_272x236_to_320x240()
 	}
 }
 
-static void Blit_256x256_to_320x240() 
+static void Blit_256x256_to_320x240()
 {
 	// 256x256
 	unsigned short * p = &VideoBuffer[(320-256)/2];
@@ -1310,7 +1309,7 @@ static void Blit_256x256_to_320x240()
 	}
 }
 
-static void Blitf_256x256_to_320x240() 
+static void Blitf_256x256_to_320x240()
 {
 	// 256x256
 	unsigned short *p = &VideoBuffer[(320-256)/2];
@@ -1640,7 +1639,7 @@ static void Blitr_248x240_to_320x240()
 	}
 }
 
-static void Blit_224x256_to_320x240() 
+static void Blit_224x256_to_320x240()
 {
 	// 224x256
 	unsigned short * p = &VideoBuffer[(320-224)/2];
@@ -1653,7 +1652,7 @@ static void Blit_224x256_to_320x240()
 	}
 }
 
-static void Blit_256x256_to_400x240() 
+static void Blit_256x256_to_400x240()
 {
 	// 256x256
 	unsigned short * p = &VideoBuffer[(400-256)/2];
@@ -1662,11 +1661,11 @@ static void Blit_256x256_to_400x240()
 		memcpy( p, q, 256 * 2 );
 		p += 400;
 		q += 256;
-		if(i % 16 == 0) q += 256; 
+		if(i % 16 == 0) q += 256;
 	}
 }
 
-static void Blit_224x256_to_400x240() 
+static void Blit_224x256_to_400x240()
 {
 	// 224x256
 	unsigned short * p = &VideoBuffer[(400-224)/2];
@@ -1684,7 +1683,7 @@ static void Blit_448x224_to_400x240()
 	// IGS 448x224
 	unsigned short * p = &VideoBuffer[8*400+4];
 	unsigned short * q = BurnVideoBuffer;
-	
+
 	for (int i=0; i<224; i++, p += 8)
 		for (int j=0; j<56; j++) {
 			p[0] = q[0];
@@ -1958,19 +1957,13 @@ void VideoExit()
 
 void VideoClear()
 {
-	SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255));
-	VideoFlip();
-	SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255));
-	VideoFlip();
-	// SDL_Flip(screen);
-	// SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255));
+	SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255)); VideoFlip();
+	SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255)); VideoFlip();
+	SDL_FillRect(screen,NULL,SDL_MapRGBA(screen->format, 0, 0, 0, 255)); VideoFlip();
 }
 
 void VideoFlip()
 {
-	// uint32_t *s = (uint32_t*)screen->pixels;
-	// uint32_t *d = (uint32_t*)RS97screen->pixels;
-	// for(uint8_t y = 0; y < 239; y++, s += 160, d += 320) memmove(d, s, 1280); // double-line fix by pingflood, 2018
 	SDL_Flip(screen);
 }
 

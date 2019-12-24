@@ -9,7 +9,7 @@
 #
 
 # Specify the name of the executable file, without ".exe"
-NAME = fba-a320.bin
+NAME = fba-a320.dge
 
 # Check for changes in header files
 DEPEND = 1
@@ -134,7 +134,7 @@ drvobj	=	\
 		#d_cps3.o \
 
 ifdef USE_LIBAO
-	depobj = ao_audio.o 
+	depobj = ao_audio.o
 endif
 
 depobj	+=	\
@@ -185,6 +185,7 @@ depobj	+=	\
 		tc0280grd.o pc080sn.o pc090oj.o cchip.o taito_ic.o taito.o \
 		\
 		tiles_generic.o \
+		dec_aud.o dec_misc.o dec_vid.o \
 		#\
 		#megadrive.o
 		#\
@@ -192,7 +193,6 @@ depobj	+=	\
 		#\
 		#psikyo_tile.o psikyo_sprite.o psikyo_palette.o \
 		#\
-		#dec_aud.o dec_misc.o dec_vid.o \
 
 
 autobj += $(depobj)

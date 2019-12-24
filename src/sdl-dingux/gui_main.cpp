@@ -96,10 +96,6 @@ void redraw_screen(void)
 {
 	SDL_Delay(16);
 	SDL_Flip(gui_screen);
-	// SDL_SoftStretch(gui_screen, NULL, RS97screen, 0);
-	// SDL_Flip(RS97screen);
-	// SDL_SoftStretch(gui_screen, NULL, screen, 0);
-	// SDL_Flip(screen);
 }
 
 void free_memory(void)
@@ -252,7 +248,7 @@ void load_preview(unsigned int numero)
 
 			flag_preview = 1;
 			return;
-		} 
+		}
 
 		// then check parent rom
 		if(strcmp(ROMLIST(parent, numero), "fba") != 0) {
@@ -266,7 +262,7 @@ void load_preview(unsigned int numero)
 
 				flag_preview = 1;
 				return;
-			} 
+			}
 		}
 	}
 
@@ -936,12 +932,8 @@ void ss_prog_run(void)
 						SDL_InitSubSystem(SDL_INIT_VIDEO);
 					}
 
-					// RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
-					// gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
-
 					gui_screen = SDL_SetVideoMode(320, 240, 16, flags);
 
-					// gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 					SDL_ShowCursor(0);
 
 					prep_bg();
@@ -1049,10 +1041,10 @@ void gui_menu_main()
 			}
 		} else {
 			for(y = sel.ofs; y < sel.ofs + 13; ++y) {
-				put_stringM(ROMLIST(name, y), 
-						8, 
-						zipnum, 
-						ROMLIST(longueur, y), 
+				put_stringM(ROMLIST(name, y),
+						8,
+						zipnum,
+						ROMLIST(longueur, y),
 						ROMLIST(etat, y));
 				zipnum += 9;
 			}
@@ -1190,8 +1182,6 @@ void GuiRun()
 	// fill data with data
 	gui_sort_romlist();
 
-	// RS97screen = SDL_SetVideoMode(320, 480, 16, SDL_SWSURFACE);
-	// gui_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 	gui_screen = SDL_SetVideoMode(320, 240, 16, flags);
 
 	SDL_ShowCursor(0);
