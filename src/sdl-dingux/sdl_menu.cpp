@@ -28,7 +28,7 @@
 #include "sdl_run.h"
 #include "sdl_video.h"
 #include "font.h"
-
+#include "gui_main.h"
 
 #define _s(A) #A
 #define _a(A) _s(A)
@@ -65,6 +65,9 @@ static void call_exit() { extern int done; GameLooping = false; done = 1; }
 static void call_continue() { extern int done; done = 1; }
 static void gui_KeyMenuRun();
 static void gui_reset();
+static void gui_original() {
+	GuiRun();
+}
 
 /* data definitions */
 char *gui_KeyNames[] = {"A", "B", "X", "Y", "L", "R"};
@@ -78,12 +81,13 @@ MENUITEM gui_MainMenuItems[] = {
 	{(char *)"Load state              ", &nSavestateSlot, 9, NULL, &gui_LoadState},
 	{(char *)"Save state              ", &nSavestateSlot, 9, NULL, &gui_Savestate},
 	{(char *)"Key config", NULL, 0, NULL, &gui_KeyMenuRun},
+	{(char *)"FBA Frontend", NULL, 0, NULL, &gui_original},
 	{(char *)"Reset", NULL, 0, NULL, &gui_reset},
 	{(char *)"Exit", NULL, 0, NULL, &call_exit},
 	{NULL, NULL, 0, NULL, NULL}
 };
 
-MENU gui_MainMenu = { 5, 0, (MENUITEM *)&gui_MainMenuItems };
+MENU gui_MainMenu = { 6, 0, (MENUITEM *)&gui_MainMenuItems };
 
 MENUITEM gui_KeyMenuItems[] = {
 	{(char *)"Button 1                ", &gui_KeyData[0], 5, (char **)&gui_KeyNames, NULL},
