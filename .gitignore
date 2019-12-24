@@ -13,3 +13,5 @@ src/generated/*
 gamelist.txt
 *.ipk
 *.bin
+*.opk
+.fba

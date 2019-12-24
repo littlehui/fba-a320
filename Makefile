@@ -1,5 +1,10 @@
-# CHAINPREFIX := /opt/rs97-toolchain-musl
-CHAINPREFIX := /opt/mipsel-linux-uclibc
+#
+# FBA-A320 for the RetroFW
+#
+# by pingflood; 2019
+#
+
+CHAINPREFIX := /opt/mipsel-RetroFW-linux-uclibc
 CROSS_COMPILE := $(CHAINPREFIX)/usr/bin/mipsel-linux-
 
 HOSTCC = gcc
@@ -13,7 +18,6 @@ LD	= $(CXX)
 SYSROOT     := $(shell $(CC) --print-sysroot)
 SDL_CFLAGS  := $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
 SDL_LIBS    := $(shell $(SYSROOT)/usr/bin/sdl-config --libs)
-
 
 # Makefile for FBA, for use with GNU make
 #
@@ -147,7 +151,7 @@ drvobj	=	\
 		#d_cps3.o \
 
 ifdef USE_LIBAO
-	depobj = ao_audio.o 
+	depobj = ao_audio.o
 endif
 
 depobj	+=	\
@@ -269,13 +273,11 @@ alldep	= $(foreach file,$(autobj:.o=.c), \
 # AS	= mipsel-linux-as
 
 HOSTCFLAGS = $(incdir)
-CFLAGS   = -O2 -G0 -march=mips32 -pipe -fno-builtin -fno-common -mno-shared -ffast-math \
+CFLAGS   = -fpermissive -O2 -G0 -march=mips32 -pipe -fno-builtin -fno-common -mno-shared -ffast-math \
 		-fomit-frame-pointer -fexpensive-optimizations -Wno-write-strings -DLSB_FIRST -DUSE_SWAP
-CXXFLAGS = -O2 -G0 -march=mips32 -pipe -fno-builtin -fno-common -mno-shared -ffast-math \
-		-fomit-frame-pointer -fexpensive-optimizations -Wno-write-strings -DLSB_FIRST -DUSE_SWAP
-
 CFLAGS += -D__cdecl="" -D__fastcall=""
-CXXFLAGS += -D__cdecl="" -D__fastcall=""
+
+CXXFLAGS = $(CFLAGS)
 
 ifdef USE_LIBAO
 	CFLAGS += -DUSE_LIBAO
@@ -322,7 +324,7 @@ endif
 
 CFLAGS += $(DEF) $(incdir)
 CXXFLAGS += $(DEF) $(incdir)
-LDFLAGS += 
+LDFLAGS +=
 ASFLAGS = -O1
 
 #
@@ -379,18 +381,6 @@ $(NAME):	$(allobj)
 	@mkdir -p fba-a320/skin
 	@cp src/sdl-dingux/skin/*.png fba-a320/skin/
 endif
-
-ipk: all
-	@rm -rf /tmp/.fba-a320-ipk/ && mkdir -p /tmp/.fba-a320-ipk/root/home/retrofw/emus/fba-a320 /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators.systems
-	@cp -r fba-a320/skin fba-a320/fba-a320.dge fba-a320/fba-a320.png fba-a320/aliases.txt /tmp/.fba-a320-ipk/root/home/retrofw/emus/fba-a320
-	@cp fba-a320/fba-a320.lnk /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators
-	@cp fba-a320/cps1.fba-a320.lnk fba-a320/cps2.fba-a320.lnk fba-a320/neogeo.fba-a320.lnk /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators.systems
-	@sed "s/^Version:.*/Version: $$(date +%Y%m%d)/" fba-a320/control > /tmp/.fba-a320-ipk/control
-	@cp fba-a320/conffiles fba-a320/postinst /tmp/.fba-a320-ipk/
-	@tar --owner=0 --group=0 -czvf /tmp/.fba-a320-ipk/control.tar.gz -C /tmp/.fba-a320-ipk/ control conffiles postinst
-	@tar --owner=0 --group=0 -czvf /tmp/.fba-a320-ipk/data.tar.gz -C /tmp/.fba-a320-ipk/root/ .
-	@echo 2.0 > /tmp/.fba-a320-ipk/debian-binary
-	@ar r fba-a320/fba-a320.ipk /tmp/.fba-a320-ipk/control.tar.gz /tmp/.fba-a320-ipk/data.tar.gz /tmp/.fba-a320-ipk/debian-binary
 
 #
 #	Generate the gamelist
@@ -610,6 +600,37 @@ cleandep:
 	@echo Removing depend files from $(objdir)...
 	@for dir in $(alldir); do rm -f $(objdir)$$dir/*.d; done
 
+#
+#	Rule to force recompilation of any target that depends on it
+#
+
+FORCE:
+
+ipk: all
+	@rm -rf /tmp/.fba-a320-ipk/ && mkdir -p /tmp/.fba-a320-ipk/root/home/retrofw/emus/fba-a320 /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators.systems
+	@cp -r fba-a320/skin fba-a320/fba-a320.dge fba-a320/fba-a320.png fba-a320/aliases.txt /tmp/.fba-a320-ipk/root/home/retrofw/emus/fba-a320
+	@cp fba-a320/fba-a320.lnk /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators
+	@cp fba-a320/cps1.fba-a320.lnk fba-a320/cps2.fba-a320.lnk fba-a320/neogeo.fba-a320.lnk /tmp/.fba-a320-ipk/root/home/retrofw/apps/gmenu2x/sections/emulators.systems
+	@sed "s/^Version:.*/Version: $$(date +%Y%m%d)/" fba-a320/control > /tmp/.fba-a320-ipk/control
+	@cp fba-a320/conffiles fba-a320/postinst /tmp/.fba-a320-ipk/
+	@tar --owner=0 --group=0 -czvf /tmp/.fba-a320-ipk/control.tar.gz -C /tmp/.fba-a320-ipk/ control conffiles postinst
+	@tar --owner=0 --group=0 -czvf /tmp/.fba-a320-ipk/data.tar.gz -C /tmp/.fba-a320-ipk/root/ .
+	@echo 2.0 > /tmp/.fba-a320-ipk/debian-binary
+	@ar r fba-a320/fba-a320.ipk /tmp/.fba-a320-ipk/control.tar.gz /tmp/.fba-a320-ipk/data.tar.gz /tmp/.fba-a320-ipk/debian-binary
+
+opk: all
+	@mksquashfs \
+	fba-a320/default.retrofw.desktop \
+	fba-a320/cps1.retrofw.desktop \
+	fba-a320/cps2.retrofw.desktop \
+	fba-a320/neogeo.retrofw.desktop \
+	fba-a320/skin \
+	fba-a320/fba-a320.dge \
+	fba-a320/fba-a320.png \
+	fba-a320/aliases.txt \
+	fba-a320/fba-a320.opk \
+	-all-root -noappend -no-exports -no-xattrs
+
 clean:
 	@echo Removing all files from $(objdir)...
 	@rm -f -r $(objdir)
@@ -622,8 +643,3 @@ endif
 	@echo Removing executable file...
 	@rm -f fba-a320/$(NAME)
 	@rm -f fba-a320/fba-a320.ipk
-#
-#	Rule to force recompilation of any target that depends on it
-#
-
-FORCE:

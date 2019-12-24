@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=FBA A320
+Comment=FinalBurnAdvance Emulator
+Exec=fba-a320.dge
+Icon=fba-a320
+Categories=emulators;
+X-OD-Selector=/home/retrofw/roms
+X-OD-Filter=.zip
+X-OD-Alias=aliases.txt
+Terminal=false
+Type=Application
+StartupNotify=true
