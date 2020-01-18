@@ -95,8 +95,9 @@ void RunEmulator(int drvnum)
 
 	if (hwscale > 0) {
 		VideoInitForce320x240(); // sets video mode to 320x240 so the loading screen looks right when a game uses a resolution different than 320x240
-	} else
+	} else {
 		VideoInit();
+	}
 
 	printf("Attempt to initialise '%s'\n", BurnDrvGetTextA(DRV_FULLNAME));
 
