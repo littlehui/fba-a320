@@ -149,7 +149,7 @@ int ConfigAppSave()
 void ConfigGameDefault()
 {
 	// Initialize configuration options
-	options.sound = 2;
+	options.sound = 3;
 	options.samplerate = 2;		// 0 - 11025, 1 - 16000, 2 - 22050, 3 - 32000
 	options.vsync = 1;
 	options.rescale = 0;		// no scaling by default
