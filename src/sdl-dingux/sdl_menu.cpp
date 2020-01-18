@@ -39,8 +39,7 @@ extern SDL_Surface *screen;
 int screen_w, screen_h;
 extern int flags;
 
-// extern SDL_Surface *RS97screen;
-SDL_Surface *menuSurface = NULL; // menu rendering
+// SDL_Surface *menuSurface = NULL; // menu rendering
 
 /* type definitions */
 typedef struct {
@@ -114,11 +113,7 @@ void gui_Flip()
 	// dstrect.y = (screen->h - 240) / 2;
 
 	// SDL_BlitSurface(menuSurface, 0, screen, &dstrect);
-	// SDL_Flip(screen);
-	// SDL_SoftStretch(menuSurface, NULL, RS97screen, 0);
-	// SDL_Flip(RS97screen);
-
-	SDL_SoftStretch(menuSurface, NULL, screen, 0);
+	// SDL_SoftStretch(menuSurface, NULL, screen, 0);
 	SDL_Flip(screen);
 }
 
@@ -156,7 +151,7 @@ void ShowMenuItem(int x, int y, MENUITEM *m, int fg_color)
 	static char i_str[24];
 
 	// if no parameters, show simple menu item
-	if(m->itemPar == NULL) DrawString2(menuSurface, m->itemName, fg_color, COLOR_BG, x, y);
+	if(m->itemPar == NULL) DrawString2(screen, m->itemName, fg_color, COLOR_BG, x, y);
 	else {
 		if(m->itemParName == NULL) {
 			// if parameter is a digit
@@ -165,7 +160,7 @@ void ShowMenuItem(int x, int y, MENUITEM *m, int fg_color)
 			// if parameter is a name in array
 			sprintf(i_str, "%s%s", m->itemName, *(m->itemParName + *m->itemPar));
 		}
-		DrawString2(menuSurface, i_str, fg_color, COLOR_BG, x, y);
+		DrawString2(screen, i_str, fg_color, COLOR_BG, x, y);
 	}
 }
 
@@ -178,7 +173,7 @@ void ShowMenu(MENU *menu)
 	MENUITEM *mi = menu->m;
 
 	// clear buffer
-	SDL_FillRect(menuSurface, NULL, COLOR_BG);
+	SDL_FillRect(screen, NULL, COLOR_BG);
 
 	// show menu lines
 	for(i = 0; i < menu->itemNum; i++, mi++) {
@@ -189,12 +184,12 @@ void ShowMenu(MENU *menu)
 	}
 
 	// show preview screen
-	//ShowPreview(menu);
+	// ShowPreview(menu);
 
 	// print info string
 	// DrawString("Press B to return to game", COLOR_HELP_TEXT, COLOR_BG, 56, 220);
-	DrawString2(menuSurface, "FinalBurn Alpha " VERSION, COLOR_TEXT, COLOR_BG, 50, 4);
-	DrawString2(menuSurface, "(c) Team FB Alpha", COLOR_TEXT, COLOR_BG, 80, 226);
+	DrawString2(screen, "FinalBurn Alpha " VERSION, COLOR_TEXT, COLOR_BG, 50, 4);
+	DrawString2(screen, "(c) Team FB Alpha", COLOR_TEXT, COLOR_BG, 80, 226);
 }
 
 /*
@@ -261,15 +256,9 @@ static void gui_reset()
 
 void gui_Init()
 {
-
-
-
-// int screen_w, screen_h;
-
-// SDL_GetWindowSize(screen, &screen_w, &screen_h);
-
-
-	menuSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
+// // int screen_w, screen_h;
+// // SDL_GetWindowSize(screen, &screen_w, &screen_h);
+// 	screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320, 240, 16, 0, 0, 0, 0);
 }
 
 void gui_Run()
@@ -309,8 +298,8 @@ void gui_Run()
 
 void gui_Exit()
 {
-	if(menuSurface) SDL_FreeSurface(menuSurface);
-	screen = SDL_SetVideoMode(screen_w, screen_h, 16, flags);
+	// if(menuSurface) SDL_FreeSurface(menuSurface);
+	// screen = SDL_SetVideoMode(screen_w, screen_h, 16, flags);
 }
 
 //
