@@ -213,11 +213,13 @@ void do_keypad()
 			keypc &= ~BUTTON_QSAVE;
 			keypc &= ~BUTTON_A;
 			StatedSave(nSavestateSlot);
+			SDL_Delay(100);
 		}
 		else if ((keypc & BUTTON_QLOAD) || ((keypc & BUTTON_SELECT) && (keypc & BUTTON_SL))) {
 			keypc &= ~BUTTON_QLOAD;
 			keypc &= ~BUTTON_B;
 			StatedLoad(nSavestateSlot);
+			SDL_Delay(100);
 		}
 	}
 }
