@@ -265,6 +265,8 @@ void gui_Run()
 {
 	screen_w = screen->w;
 	screen_h = screen->h;
+
+	SDL_Delay(50);
 	screen = SDL_SetVideoMode(320, 240, 16, flags);
 
 	struct timeval s, e;
@@ -280,6 +282,7 @@ void gui_Run()
 	ConfigGameSave();
 
 	screen = SDL_SetVideoMode(screen_w, screen_h, 16, flags);
+	SDL_Delay(50);
 
 	gettimeofday(&e, NULL);
 	start.tv_sec += e.tv_sec - s.tv_sec;
