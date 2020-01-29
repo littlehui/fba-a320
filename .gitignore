@@ -11,3 +11,4 @@ obj
 *~.txt
 src/generated/*
 gamelist.txt
+*.ipk
